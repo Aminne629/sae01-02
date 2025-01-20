@@ -64,7 +64,7 @@ public class Classification {
 
 
             // Partie 2 : Analyse des catégories
-
+            ArrayList<PaireChaineEntier> listePourLaMoyenne = new ArrayList<>();
             int i = 0;
             while (i < categories.size()) {
                 Categorie categorie = categories.get(i);
@@ -90,14 +90,16 @@ public class Classification {
 
                 if (totalDansCategorie > 0) {
                     double tauxPrecision = (double) correctementClassees / totalDansCategorie * 100;
+                    int tauxEnInt = (int) tauxPrecision;
                     file.write(categorieNom.toUpperCase() + ":" + tauxPrecision + "%\n");
+                    listePourLaMoyenne.add(new PaireChaineEntier(categorieNom, tauxEnInt));
                 } else {
                     System.out.println("Catégorie " + categorieNom + ": Aucune dépêche trouvée.");
                 }
 
                 i++;
             }
-
+            file.write("MOYENNE:"+UtilitairePaireChaineEntier.moyenne(listePourLaMoyenne) + "%\n");
             System.out.println("Votre saisie a été écrite avec succès dans " + nomFichier + ".txt");
             file.close();
         } catch (IOException e) {
