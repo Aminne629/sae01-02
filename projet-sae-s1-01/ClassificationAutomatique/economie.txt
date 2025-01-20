@@ -13,3 +13,10 @@ réduction:2
 taxes:3
 social:1
 revenus:3
+industrie:2
+entreprises:2
+industries:2
+compétitivité:2
+inflation:3
+banque:3
+
