@@ -69,12 +69,6 @@ public class Categorie {
             }
         }
         return score;
-
-
-
-
-
-        return 0;
     }
 
 

@@ -18,7 +18,21 @@ public class UtilitairePaireChaineEntier {
     }
 
     public static String chaineMax(ArrayList<PaireChaineEntier> listePaires) {
-        return "SPORT";
+        if (listePaires.isEmpty())//on verifie si listepaires est vide
+            return null;
+
+        String chainemax = listePaires.get(0).getChaine();//on initialise le plus grand
+        int maxscore = listePaires.get(0).getEntier();// on initialise la aussi avec le premier elt
+
+        //on parcourt pour trouver le max
+        for (int i = 1;i<listePaires.size();i++){ // on commence a i=1(deuxieme elt) car on a initialiser avec le premier elt
+            int score = listePaires.get(i).getEntier();// on initialise une variable score(pr aller plus vite)
+            if (score > maxscore){//on compare
+                maxscore = score;//on met à jour si la condition est verifiée
+                chainemax = listePaires.get(i).getChaine();//on met a jour aussi
+            }
+        }
+        return chainemax;
     }
 
 
