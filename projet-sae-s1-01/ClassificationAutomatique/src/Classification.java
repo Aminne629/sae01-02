@@ -109,10 +109,15 @@ public class Classification {
     }
 
 
+    public static boolean contientCaracteresSpeciaux(String mot) {
+        String nettoye = mot.replaceAll("[a-zA-Z0-9]", ""); // Retire toutes les lettres et chiffres
+        return !nettoye.isEmpty(); // Si la chaîne nettoyée n'est pas vide, il y avait des caractères spéciaux
+    }
 
 
 
-        // La méthode initDico retourne une liste de PaireChaineEntier
+
+    // La méthode initDico retourne une liste de PaireChaineEntier
         public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
             // Liste qui contiendra les paires (mot, score)
             categorie = categorie.toUpperCase();
@@ -127,24 +132,24 @@ public class Classification {
 
                     // Parcours des mots de la dépêche
                     for (String mot : mots) {
+
+
                         // Vérification si le mot n'est pas déjà présent dans resultat
                         boolean present = false;
-                        for (PaireChaineEntier paire : resultat) {
-                            if (paire.getChaine().equals(mot)) {
+                        for (int i = 0; i<resultat.size() && !contientCaracteresSpeciaux(mot) && !present ; i++) {  //j'ai utilisé une fonction que j'ai rajouté pour ne pas compter
+                            if (resultat.get(i).getChaine().equals(mot)) {                                          //les caractères spéciaux pour éviter les erreurs.
                                 present = true;
-                                break;
                             }
                         }
 
                         // Si le mot n'est pas encore dans la liste, on l'ajoute avec un score de 0
-                        if (!present) {
+                        if (!present && !contientCaracteresSpeciaux(mot)) {
                             PaireChaineEntier paire = new PaireChaineEntier(mot, 0);
                             resultat.add(paire);
                         }
                     }
                 }
             }
-
             // Retourner la liste contenant les paires (mot, score)
             return resultat;
         }
@@ -156,22 +161,22 @@ public class Classification {
         categorie = categorie.toUpperCase();
         // Parcours de toutes les dépêches
         for (int i = 0; i < depeches.size(); i++) {
-            Depeche depeche = depeches.get(i);
+            Depeche depecheCourante = depeches.get(i);
 
             // Vérification si la dépêche appartient à la catégorie demandée
-            boolean estDansLaCategorie = depeche.getCategorie().equals(categorie);
+            boolean estDansLaCategorie = depecheCourante.getCategorie().equals(categorie);
 
             // Récupération des mots de la dépêche
-            ArrayList<String> mots = depeche.getMots();  // Cette méthode doit retourner une ArrayList<String>
+            ArrayList<String> mots = depecheCourante.getMots();  // Cette méthode doit retourner une ArrayList<String>
 
             // Parcours des mots de la dépêche
             for (int j = 0; j < mots.size(); j++) {
-                String mot = mots.get(j);
+                String motDeLaDepeche = mots.get(j);
                 boolean present = false;
                 // Parcours du dictionnaire pour trouver la PaireChaineEntier associée au mot
                 for (int k = 0; k < dictionnaire.size() && !present; k++) {
                     PaireChaineEntier paire = dictionnaire.get(k);
-                    if (paire.getChaine().equals(mot)) {
+                    if (paire.getChaine().equals(motDeLaDepeche)) {
                         // Si la dépêche appartient à la catégorie, incrémenter le score
                         if (estDansLaCategorie) {
                             paire.setEntier(paire.getEntier() + 1);  // Incrémentation
@@ -216,7 +221,7 @@ public class Classification {
 
         //Chargement des dépêches en mémoire
         System.out.println("chargement des dépêches");
-        ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
+        ArrayList<Depeche> depeches = lectureDepeches("./test.txt");
 
         for (int i = 0; i < depeches.size(); i++) {
             depeches.get(i).afficher();
@@ -237,22 +242,22 @@ public class Classification {
         politique.initLexique("./politique.txt");
         Categorie culture = new Categorie("culture");
         culture.initLexique("./culture.txt");
-        System.out.println(economie.getLexique());
+//        System.out.println(economie.getLexique());
 
 
-        for(int i=0; i<sport.getLexique().size();i++){
-            System.out.print(sport.getLexique().get(i).getChaine() + ":");
-            System.out.println(sport.getLexique().get(i).getEntier());
-        }
+//        for(int i=0; i<sport.getLexique().size();i++){
+//            System.out.print(sport.getLexique().get(i).getChaine() + ":");
+//            System.out.println(sport.getLexique().get(i).getEntier());
+//        }
 
-        Scanner lecteur = new Scanner(System.in);
-        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
-        String mot = lecteur.nextLine();
-        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
+           Scanner lecteur = new Scanner(System.in);
+//        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
+//        String mot = lecteur.nextLine();
+//        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
 
-
-        System.out.println(sport.score(depeches.get(402)));
-        System.out.println(economie.score(depeches.get(204)));
+//
+//        System.out.println(sport.score(depeches.get(402)));
+//        System.out.println(economie.score(depeches.get(204)));
 
 
         ArrayList<Categorie> listCategorie = new ArrayList<>();
@@ -262,32 +267,42 @@ public class Classification {
         listCategorie.add(politique);
         listCategorie.add(culture);
 
-        System.out.print("Donnez un  numéro de depeche: ");
-        int numDepeche = lecteur.nextInt();lecteur.nextLine();
-        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
-        for (int i = 0; i < listCategorie.size(); i++) {
+//        System.out.print("Donnez un  numéro de depeche: ");
+//        int numDepeche = lecteur.nextInt();lecteur.nextLine();
+//        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
+//        for (int i = 0; i < listCategorie.size(); i++) {
+//
+//            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
+//            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
+//            listeScore.add(aAjouter);
+//
+//        }
 
-            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
-            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
-            listeScore.add(aAjouter);
-
-        }
+//        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
 
 
-        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
         classementDepeches(depeches,listCategorie,"fichier-reponse");
 
 
-        //test
-//        ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches,listCategorie.get(0).getNom());
-//        calculScores(depeches,listCategorie.get(0).getNom(),dictionnaire);
-//        for(PaireChaineEntier paire : dictionnaire){
-//            System.out.println(paire.getChaine()+":"+poidsPourScore(paire.getEntier()));
-//        }
-        //test
+
         for (Categorie categorie : listCategorie) {
-            generationLexique(depeches,listCategorie.get(0).getNom(),categorie.getNom()+"(1)");
+            generationLexique(depeches,categorie.getNom(),categorie.getNom()+"-lexique-automatique");
         }
+        System.out.println("Création automatique des lexiques terminée.");
+
+        listCategorie.clear();
+        sport.initLexique("./sport-lexique-automatique.txt");
+        economie.initLexique("./economie-lexique-automatique.txt");
+        sciences.initLexique("./sciences-lexique-automatique.txt");
+        politique.initLexique("./politique-lexique-automatique.txt");
+        culture.initLexique("./culture-lexique-automatique.txt");
+        listCategorie.add(sport);
+        listCategorie.add(economie);
+        listCategorie.add(sciences);
+        listCategorie.add(politique);
+        listCategorie.add(culture);
+        classementDepeches(depeches,listCategorie,"fichier-reponse-automatique");
+
     }
 
 }
