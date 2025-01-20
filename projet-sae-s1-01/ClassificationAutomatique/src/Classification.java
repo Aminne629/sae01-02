@@ -74,23 +74,45 @@ public class Classification {
             depeches.get(i).afficher();
         }
 
-        System.out.println("Initialisation des lexiques");
-        ArrayList<PaireChaineEntier> lexiqueSport = Categorie.initLexique("./sport.txt");
-        ArrayList<PaireChaineEntier> lexiqueEconomie = Categorie.initLexique("./economie.txt");
-        ArrayList<PaireChaineEntier> lexiqueScience = Categorie.initLexique("./science.txt");
-        ArrayList<PaireChaineEntier> lexiquePolitique = Categorie.initLexique("./politique.txt");
-        ArrayList<PaireChaineEntier> lexiqueCulture = Categorie.initLexique("./culture.txt");
 
-        for(int i=0; i<lexiqueSport.size();i++){
-            System.out.print(lexiqueSport.get(i).getChaine() + ":");
-            System.out.println(lexiqueSport.get(i).getEntier());
+
+        System.out.println("Initialisation des lexiques");
+//        ArrayList<PaireChaineEntier> lexiqueSport = Categorie.initLexique("./sport.txt");
+//        ArrayList<PaireChaineEntier> lexiqueEconomie = Categorie.initLexique("./economie.txt");
+//        ArrayList<PaireChaineEntier> lexiqueScience = Categorie.initLexique("./science.txt");
+//        ArrayList<PaireChaineEntier> lexiquePolitique = Categorie.initLexique("./politique.txt");
+//        ArrayList<PaireChaineEntier> lexiqueCulture = Categorie.initLexique("./culture.txt");
+
+
+        Categorie sport = new Categorie("sport");
+        sport.initLexique("./sport.txt");
+        Categorie economie = new Categorie("economie");
+        economie.initLexique("./economie.txt");
+        Categorie science = new Categorie("science");
+        science.initLexique("./science.txt");
+        Categorie politique = new Categorie("politique");
+        politique.initLexique("./politique.txt");
+        Categorie culture = new Categorie("culture");
+        culture.initLexique("./culture.txt");
+        System.out.println(economie.getLexique());
+
+
+        for(int i=0; i<sport.getLexique().size();i++){
+            System.out.print(sport.getLexique().get(i).getChaine() + ":");
+            System.out.println(sport.getLexique().get(i).getEntier());
         }
 
         Scanner lecteur = new Scanner(System.in);
         System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
         String mot = lecteur.nextLine();
-        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(lexiqueSport,mot));
+        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
+
+
+        System.out.println(sport.score(depeches.get(402)));
+        System.out.println(economie.score(depeches.get(204)));
     }
+
+
 
 
 }
