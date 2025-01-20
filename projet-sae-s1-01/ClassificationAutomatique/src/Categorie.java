@@ -25,17 +25,18 @@ public class Categorie {
 
 
     // initialisation du lexique de la catégorie à partir du contenu d'un fichier texte
-    public static ArrayList<PaireChaineEntier> initLexique(String nomFichier) {
-        ArrayList<PaireChaineEntier> lexique = new ArrayList<>();
+    public void initLexique(String nomFichier) {
+        lexique = new ArrayList<>();
+
         try {
             // Lecture du fichier
             FileInputStream file = new FileInputStream(nomFichier);
-            Scanner lecteur = new Scanner(file);
+            Scanner scanner = new Scanner(file);
 
-            while (lecteur.hasNextLine()) {
-                String ligne = lecteur.nextLine();
+            while (scanner.hasNextLine()) {
+                String ligne = scanner.nextLine();
 
-                // format "mot:valeur"
+                // Supposons que la ligne soit au format "mot:valeur"
                 int indexDeuxPoints = ligne.indexOf(':');
                 if (indexDeuxPoints != -1) {
                     String chaine = ligne.substring(0, indexDeuxPoints).trim(); // Partie avant ':'
@@ -47,11 +48,10 @@ public class Categorie {
                 }
             }
 
-            lecteur.close();
+            scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return lexique;
     }
 
 
