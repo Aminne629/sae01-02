@@ -42,52 +42,69 @@ public class Classification {
 
 
     public static void classementDepeches(ArrayList<Depeche> depeches, ArrayList<Categorie> categories, String nomFichier) {
-        try{
-            FileWriter file = new FileWriter(nomFichier+".txt");
+        try {
+            FileWriter file = new FileWriter(nomFichier + ".txt");
             ArrayList<PaireChaineEntier> listResultat = new ArrayList<>();
-        for (int j = 0; j < depeches.size(); j++) {
-            ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
-            for (int i = 0; i < categories.size(); i++) {
 
-                int nombreMax = categories.get(i).score(depeches.get(j));
-                PaireChaineEntier aAjouter = new PaireChaineEntier(categories.get(i).getNom(), nombreMax);
-                listeScore.add(aAjouter);
-            }
-            String chaineMax = UtilitairePaireChaineEntier.chaineMax(listeScore);
-            int indiceChaineMax= UtilitairePaireChaineEntier.indicePourChaine(listeScore,chaineMax);
-            int nombreMax = listeScore.get(indiceChaineMax).getEntier();
-            String nombreformate = String.format("%03d", j+1);
-            file.write(nombreformate + ":"+chaineMax+"\n");
-            PaireChaineEntier aInserer = new PaireChaineEntier(chaineMax, nombreMax);
-            listResultat.add(aInserer);
-        }
-        System.out.println("votre saisie a été écrite avec succès dans "+nomFichier+".txt");
-        file.close();
-
-        for (int i = 0; i < categories.size(); i++) {
-            float nombreDeBase = 0.0F;
-            float nombreNvFichier = 0.0F;
+            // Partie 1 : Génération du fichier de résultats
             for (int j = 0; j < depeches.size(); j++) {
-                if (depeches.get(j).getCategorie().equals(categories.get(i).getNom())) {
-                    nombreDeBase++;
+                ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
+                for (Categorie categorie : categories) {
+                    int nombreMax = categorie.score(depeches.get(j));
+                    listeScore.add(new PaireChaineEntier(categorie.getNom(), nombreMax));
                 }
-            }
-            for (int j = 0; j < listResultat.size(); j++) {
-                if (listResultat.get(j).getChaine().equals(categories.get(i).getNom())) {
-                    nombreNvFichier++;
-                }
+
+                String chaineMax = UtilitairePaireChaineEntier.chaineMax(listeScore);
+                int indiceChaineMax = UtilitairePaireChaineEntier.indicePourChaine(listeScore, chaineMax);
+                int nombreMax = listeScore.get(indiceChaineMax).getEntier();
+                String nombreFormate = String.format("%03d", j + 1);
+                file.write(nombreFormate + ":" + chaineMax.toUpperCase() + "\n");
+                listResultat.add(new PaireChaineEntier(chaineMax, nombreMax));
             }
 
-            float pourcentTotal = (nombreNvFichier/nombreDeBase)*100;
-            System.out.println(categories.get(i).getNom()+":"+pourcentTotal+"%");
 
-        }
+            // Partie 2 : Analyse des catégories
+
+            int i = 0;
+            while (i < categories.size()) {
+                Categorie categorie = categories.get(i);
+                String categorieNom = categorie.getNom();
+
+                int totalDansCategorie = 0; // Nombre de dépêches qui appartiennent à cette catégorie
+                int correctementClassees = 0; // Nombre de dépêches correctement classées
+
+                int j = 0;
+                while (j < depeches.size()) {
+                    Depeche depeche = depeches.get(j);
+                    String categorieReelle = depeche.getCategorie();
+                    String categorieClassee = listResultat.get(j).getChaine();
+
+                    if (categorieReelle.equalsIgnoreCase(categorieNom)) {
+                        totalDansCategorie++;
+                        if (categorieReelle.equalsIgnoreCase(categorieClassee)) {
+                            correctementClassees++;
+                        }
+                    }
+                    j++;
+                }
+
+                if (totalDansCategorie > 0) {
+                    double tauxPrecision = (double) correctementClassees / totalDansCategorie * 100;
+                    file.write(categorieNom.toUpperCase() + ":" + tauxPrecision + "%\n");
+                } else {
+                    System.out.println("Catégorie " + categorieNom + ": Aucune dépêche trouvée.");
+                }
+
+                i++;
+            }
+
+            System.out.println("Votre saisie a été écrite avec succès dans " + nomFichier + ".txt");
+            file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
 
 
     public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
@@ -128,8 +145,8 @@ public class Classification {
         sport.initLexique("./sport.txt");
         Categorie economie = new Categorie("economie");
         economie.initLexique("./economie.txt");
-        Categorie science = new Categorie("science");
-        science.initLexique("./science.txt");
+        Categorie sciences = new Categorie("sciences");
+        sciences.initLexique("./science.txt");
         Categorie politique = new Categorie("politique");
         politique.initLexique("./politique.txt");
         Categorie culture = new Categorie("culture");
@@ -155,7 +172,7 @@ public class Classification {
         ArrayList<Categorie> listCategorie = new ArrayList<>();
         listCategorie.add(sport);
         listCategorie.add(economie);
-        listCategorie.add(science);
+        listCategorie.add(sciences);
         listCategorie.add(politique);
         listCategorie.add(culture);
 
