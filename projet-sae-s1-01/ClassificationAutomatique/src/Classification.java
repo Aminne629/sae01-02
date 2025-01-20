@@ -186,11 +186,11 @@ public class Classification {
     }
 
     public static int poidsPourScore(int score) {
-        if (score <=-15) {
+        if (score <=-5) {
             return 0; // Score très négatif : Poids faible
-        } else if (score <=-4) {
+        } else if (score <=-0) {
             return 1;
-        } else if (score <= 10 ) {
+        } else if (score <= 5 ) {
             return 2; // Score modéré (négatif ou positif) : Poids moyen
         } else {
             return 3; // Score très positif : Poids élevé
@@ -198,7 +198,16 @@ public class Classification {
     }
 
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
-
+        try {
+            FileWriter file = new FileWriter(nomFichier + ".txt");
+            ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches, categorie);
+            calculScores(depeches, categorie, dictionnaire);
+            for (PaireChaineEntier paire : dictionnaire) {
+                file.write(paire.getChaine() + ":" + poidsPourScore(paire.getEntier()) + "\n");
+            }
+        } catch(IOException e){
+                e.printStackTrace();
+            }
     }
 
 
@@ -272,13 +281,14 @@ public class Classification {
         //test
 //        ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches,listCategorie.get(0).getNom());
 //        calculScores(depeches,listCategorie.get(0).getNom(),dictionnaire);
-//        System.out.println("Taille du dico de la catégorie suivante: "+listCategorie.get(0).getNom()+": "+dictionnaire.size());
-
+//        for(PaireChaineEntier paire : dictionnaire){
+//            System.out.println(paire.getChaine()+":"+poidsPourScore(paire.getEntier()));
+//        }
         //test
-//        System.out.println(poidsPourScore(50));
+        for (Categorie categorie : listCategorie) {
+            generationLexique(depeches,listCategorie.get(0).getNom(),categorie.getNom()+"(1)");
+        }
     }
-
-
 
 }
 
