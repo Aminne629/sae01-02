@@ -61,6 +61,19 @@ public class Categorie {
 
     //calcul du score d'une dépêche pour la catégorie
     public int score(Depeche d) {
+        int score = 0;
+        for (String mot: d.getMots()){//on parcourt chaque mot de la depeche
+            for (PaireChaineEntier paire : lexique){//on parcourt lexique
+                if (paire.getChaine().equals(mot))//on compare les mots du lexique et ceux de la depeche
+                    score+=paire.getEntier();
+            }
+        }
+        return score;
+
+
+
+
+
         return 0;
     }
 
