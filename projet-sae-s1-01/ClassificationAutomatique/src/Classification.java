@@ -102,6 +102,10 @@ public class Classification {
 
 
         System.out.println("Initialisation des lexiques");
+<<<<<<< HEAD
+=======
+
+>>>>>>> e83f8a99575afa51e97530a33d65ffbf2c81ad3c
 
         Categorie sport = new Categorie("sport");
         sport.initLexique("./sport.txt");
@@ -129,6 +133,29 @@ public class Classification {
 
         System.out.println(sport.score(depeches.get(402)));
         System.out.println(economie.score(depeches.get(204)));
+
+
+        ArrayList<Categorie> listCategorie = new ArrayList<>();
+        listCategorie.add(sport);
+        listCategorie.add(economie);
+        listCategorie.add(science);
+        listCategorie.add(politique);
+        listCategorie.add(culture);
+
+        System.out.print("Donnez un  numéro de depeche: ");
+        int numDepeche = lecteur.nextInt();lecteur.nextLine();
+        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
+        for (int i = 0; i < listCategorie.size(); i++) {
+
+            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
+            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
+            listeScore.add(aAjouter);
+
+        }
+
+
+        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
+
     }
 
 
