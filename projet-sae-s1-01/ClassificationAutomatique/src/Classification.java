@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -109,16 +110,91 @@ public class Classification {
 
 
 
-    public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
-        ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
-        return resultat;
-    }
 
+
+        // La méthode initDico retourne une liste de PaireChaineEntier
+        public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
+            // Liste qui contiendra les paires (mot, score)
+            categorie = categorie.toUpperCase();
+            ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
+
+            // Parcours de toutes les dépêches
+            for (Depeche depeche : depeches) {
+                // Si la dépêche appartient à la catégorie demandée
+                if (depeche.getCategorie().equals(categorie)) {
+                    // Récupération des mots de la dépêche
+                    ArrayList<String> mots = depeche.getMots();  // La méthode getMots retourne directement une ArrayList<String>
+
+                    // Parcours des mots de la dépêche
+                    for (String mot : mots) {
+                        // Vérification si le mot n'est pas déjà présent dans resultat
+                        boolean present = false;
+                        for (PaireChaineEntier paire : resultat) {
+                            if (paire.getChaine().equals(mot)) {
+                                present = true;
+                                break;
+                            }
+                        }
+
+                        // Si le mot n'est pas encore dans la liste, on l'ajoute avec un score de 0
+                        if (!present) {
+                            PaireChaineEntier paire = new PaireChaineEntier(mot, 0);
+                            resultat.add(paire);
+                        }
+                    }
+                }
+            }
+
+            // Retourner la liste contenant les paires (mot, score)
+            return resultat;
+        }
+
+
+
+    // La méthode calculScores met à jour les scores des mots dans dictionnaire
     public static void calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
+        categorie = categorie.toUpperCase();
+        // Parcours de toutes les dépêches
+        for (int i = 0; i < depeches.size(); i++) {
+            Depeche depeche = depeches.get(i);
+
+            // Vérification si la dépêche appartient à la catégorie demandée
+            boolean estDansLaCategorie = depeche.getCategorie().equals(categorie);
+
+            // Récupération des mots de la dépêche
+            ArrayList<String> mots = depeche.getMots();  // Cette méthode doit retourner une ArrayList<String>
+
+            // Parcours des mots de la dépêche
+            for (int j = 0; j < mots.size(); j++) {
+                String mot = mots.get(j);
+                boolean present = false;
+                // Parcours du dictionnaire pour trouver la PaireChaineEntier associée au mot
+                for (int k = 0; k < dictionnaire.size() && !present; k++) {
+                    PaireChaineEntier paire = dictionnaire.get(k);
+                    if (paire.getChaine().equals(mot)) {
+                        // Si la dépêche appartient à la catégorie, incrémenter le score
+                        if (estDansLaCategorie) {
+                            paire.setEntier(paire.getEntier() + 1);  // Incrémentation
+                        } else {
+                            paire.setEntier(paire.getEntier() - 1);  // Décrémentation
+                        }
+                        present = true;
+                    }
+                }
+            }
+        }
     }
 
     public static int poidsPourScore(int score) {
-        return 0;
+        if (score <=-15) {
+            return 0; // Score très négatif : Poids faible
+        } else if (score <=-4) {
+            return 1;
+        } else if (score <= 10 ) {
+            return 2; // Score modéré (négatif ou positif) : Poids moyen
+        } else {
+            return 3; // Score très positif : Poids élevé
+        }
     }
 
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
@@ -192,8 +268,15 @@ public class Classification {
         System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
         classementDepeches(depeches,listCategorie,"fichier-reponse");
 
-    }
 
+        //test
+//        ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches,listCategorie.get(0).getNom());
+//        calculScores(depeches,listCategorie.get(0).getNom(),dictionnaire);
+//        System.out.println("Taille du dico de la catégorie suivante: "+listCategorie.get(0).getNom()+": "+dictionnaire.size());
+
+        //test
+//        System.out.println(poidsPourScore(50));
+    }
 
 
 
