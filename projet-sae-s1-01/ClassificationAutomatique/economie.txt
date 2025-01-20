@@ -1,0 +1,15 @@
+prix:3
+inflation:2
+marché:3
+entreprise:3
+finances:3
+investissement:3
+revenus:3
+croissance:3
+bourse:1
+économie:3
+ministre:1
+réduction:2
+taxes:3
+social:1
+revenus:3
