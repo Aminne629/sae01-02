@@ -32,6 +32,7 @@ public class UtilitairePaireChaineEntier {
                 chainemax = listePaires.get(i).getChaine();//on met a jour aussi
             }
         }
+
         return chainemax;
     }
 
