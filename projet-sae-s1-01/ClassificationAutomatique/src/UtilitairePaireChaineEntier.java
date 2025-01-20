@@ -22,10 +22,10 @@ public class UtilitairePaireChaineEntier {
             return null;
 
         String chainemax = listePaires.get(0).getChaine();//on initialise le plus grand
-        int maxscore = listePaires.get(0).getEntier();// on initialise la aussi avec le premier elt
+        int maxscore = listePaires.get(0).getEntier();// on initialise là aussi avec le premier element
 
         //on parcourt pour trouver le max
-        for (int i = 1;i<listePaires.size();i++){ // on commence a i=1(deuxieme elt) car on a initialiser avec le premier elt
+        for (int i = 1;i<listePaires.size();i++){ // on commence a i=1(deuxieme element) car on a initialiser avec le premier element
             int score = listePaires.get(i).getEntier();// on initialise une variable score(pr aller plus vite)
             if (score > maxscore){//on compare
                 maxscore = score;//on met à jour si la condition est verifiée
