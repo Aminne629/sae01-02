@@ -62,6 +62,8 @@ public class Classification {
 
     }
 
+
+
     public static void main(String[] args) {
 
         //Chargement des dépêches en mémoire
@@ -70,6 +72,18 @@ public class Classification {
 
         for (int i = 0; i < depeches.size(); i++) {
             depeches.get(i).afficher();
+        }
+
+        System.out.println("Initialisation des lexiques");
+        ArrayList<PaireChaineEntier> lexiqueSport = Categorie.initLexique("./sport.txt");
+        ArrayList<PaireChaineEntier> lexiqueEconomie = Categorie.initLexique("./economie.txt");
+        ArrayList<PaireChaineEntier> lexiqueScience = Categorie.initLexique("./science.txt");
+        ArrayList<PaireChaineEntier> lexiquePolitique = Categorie.initLexique("./politique.txt");
+        ArrayList<PaireChaineEntier> lexiqueCulture = Categorie.initLexique("./culture.txt");
+
+        for(int i=0; i<lexiqueSport.size();i++){
+            System.out.print(lexiqueSport.get(i).getChaine() + ":");
+            System.out.println(lexiqueSport.get(i).getEntier());
         }
 
     }
