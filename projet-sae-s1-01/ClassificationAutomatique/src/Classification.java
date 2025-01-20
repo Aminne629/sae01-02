@@ -86,6 +86,10 @@ public class Classification {
             System.out.println(lexiqueSport.get(i).getEntier());
         }
 
+        Scanner lecteur = new Scanner(System.in);
+        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
+        String mot = lecteur.nextLine();
+        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(lexiqueSport,mot));
     }
 
 
