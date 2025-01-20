@@ -42,6 +42,31 @@ public class Classification {
 
 
     public static void classementDepeches(ArrayList<Depeche> depeches, ArrayList<Categorie> categories, String nomFichier) {
+        try{// on lance dans un try
+            FileWriter writer = new FileWriter(nomFichier);// on cree le filewriter avec le nom du fichier
+
+            for (Depeche depeche : depeches) {//on parcourt les depeches
+                int maxscore = 0;
+                Categorie categorieMax = null;
+
+                for (Categorie categorie: categories){//on parcourt les categories
+                    int score = Categorie.score(depeche);
+
+                }
+
+            }
+
+
+
+
+        }catch (IOException e){//on catch l'exception IOException
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
 
@@ -77,12 +102,6 @@ public class Classification {
 
 
         System.out.println("Initialisation des lexiques");
-//        ArrayList<PaireChaineEntier> lexiqueSport = Categorie.initLexique("./sport.txt");
-//        ArrayList<PaireChaineEntier> lexiqueEconomie = Categorie.initLexique("./economie.txt");
-//        ArrayList<PaireChaineEntier> lexiqueScience = Categorie.initLexique("./science.txt");
-//        ArrayList<PaireChaineEntier> lexiquePolitique = Categorie.initLexique("./politique.txt");
-//        ArrayList<PaireChaineEntier> lexiqueCulture = Categorie.initLexique("./culture.txt");
-
 
         Categorie sport = new Categorie("sport");
         sport.initLexique("./sport.txt");

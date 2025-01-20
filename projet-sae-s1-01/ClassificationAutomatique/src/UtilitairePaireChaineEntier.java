@@ -4,8 +4,12 @@ public class UtilitairePaireChaineEntier {
 
 
     public static int indicePourChaine(ArrayList<PaireChaineEntier> listePaires, String chaine) {
-        return 0;
-
+        int indice = -1;// initialise à -1
+        for (int i =0 ; i<listePaires.size(); i++){ // on parcourt
+            if (listePaires.get(i).getChaine().equals(chaine))
+                indice = i; // si la chaine existe, on met à jour l'indice
+        }
+        return indice;
     }
 
     public static int entierPourChaine(ArrayList<PaireChaineEntier> listePaires, String chaine) {
@@ -38,7 +42,15 @@ public class UtilitairePaireChaineEntier {
 
 
     public static float moyenne(ArrayList<PaireChaineEntier> listePaires) {
-        return 0;
+        float moyenne = 0;
+        for (int i =0; i< listePaires.size();i++){
+            moyenne += listePaires.get(i).getEntier();
+        }
+        return moyenne/listePaires.size();
     }
+
+
+
+
 
 }
