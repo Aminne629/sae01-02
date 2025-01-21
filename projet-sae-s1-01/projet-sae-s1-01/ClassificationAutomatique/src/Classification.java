@@ -110,16 +110,10 @@ public class Classification {
     }
 
 
-    public static boolean contientCaracteresSpeciaux(String mot) {
-        String nettoyage = mot.replaceAll(":", ""); // Retire toutes les lettres et chiffres
-        return !nettoyage.isEmpty(); // Si la chaîne nettoyée n'est pas vide, il y avait des caractères spéciaux
-    }
-
-
-
 
     // La méthode initDico retourne une liste de PaireChaineEntier
         public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
+            int nbComparaisons = 0;
             // Liste qui contiendra les paires (mot, score)
             categorie = categorie.toUpperCase();
             ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
@@ -127,6 +121,7 @@ public class Classification {
             // Parcours de toutes les dépêches
             for (Depeche depeche : depeches) {
                 // Si la dépêche appartient à la catégorie demandée
+                nbComparaisons ++;
                 if (depeche.getCategorie().equals(categorie)) {
                     // Récupération des mots de la dépêche
                     ArrayList<String> mots = depeche.getMots();  // La méthode getMots retourne directement une ArrayList<String>
@@ -137,7 +132,8 @@ public class Classification {
                         // Vérification si le mot n'est pas déjà présent dans resultat
                         boolean present = false;
                         for (int i = 0; i<resultat.size() && !present ; i++) {  //j'ai utilisé une fonction que j'ai rajouté pour ne pas compter
-                            if (resultat.get(i).getChaine().equals(mot)) {                                          //les caractères spéciaux pour éviter les erreurs.
+                            nbComparaisons++;
+                            if (resultat.get(i).getChaine().equals(mot)) {//les caractères spéciaux pour éviter les erreurs.
                                 present = true;
                             }
                         }
@@ -151,6 +147,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
+            System.out.println(nbComparaisons);
             return resultat;
         }
 
@@ -158,19 +155,22 @@ public class Classification {
     public static ArrayList<PaireChaineEntier> initDicoDicho(ArrayList<Depeche> depeches, String categorie) {
         categorie = categorie.toUpperCase();
         ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
+        int nbComparaisons=0;
 
         // Parcours de toutes les dépêches
         for (Depeche depeche : depeches) {
             // Si la dépêche appartient à la catégorie demandée
+            nbComparaisons++;
             if (depeche.getCategorie().equals(categorie)) {
                 // Récupération des mots de la dépêche
                 ArrayList<String> mots = depeche.getMots(); // La méthode getMots retourne directement une ArrayList<String>
 
                 // Parcours des mots de la dépêche
                 for (String mot : mots) {
-                    // Recherche dichotomique dans resultat pour trouver l'index du mot
-                    int index = rechercheDichotomique(resultat, mot);
-
+                    // Recherche dichotomique dans resultat pour trouver l'index du mot ( il est à l'indice 0);
+                    int index = (rechercheDichotomique(resultat, mot)).get(0);
+                    //on ajoute le nombre de comparaisons qui est retourné à l'indice 1
+                    nbComparaisons = nbComparaisons + (rechercheDichotomique(resultat, mot)).get(1);
                     // Si le mot n'est pas trouvé (index négatif), on l'insère à la position appropriée
                     if (index < 0) {
                         index = -(index + 1); // Convertir l'index négatif en position d'insertion
@@ -179,24 +179,31 @@ public class Classification {
                 }
             }
         }
-
+        System.out.println(nbComparaisons);
         // Retourner la liste contenant les paires (mot, score)
         return resultat;
     }
 
     // Méthode de recherche dichotomique pour trouver un mot dans une liste triée
-    private static int rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
+    //renvoie l'indice du mot ou alors l'indice ou il faut l'insérer grace à une technique d'inversion à l'indice 0
+    // et renvoie le nb de comparaisons à l'indice 1
+    private static ArrayList<Integer> rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
+        int nbComparaisons=1;
         Utilitaire.triFusion(liste,0,liste.size()-1);
         int inf = 0;
         int sup = liste.size() - 1;
+        ArrayList<Integer> resultat = new ArrayList<>();
 
         while (inf <= sup) {
+            nbComparaisons++;
             int milieu = (inf + sup) / 2;
             String chaineMilieu = liste.get(milieu).getChaine();
-
             int comparaison = mot.compareTo(chaineMilieu);
+            nbComparaisons++;
             if (comparaison == 0) {
-                return milieu; // Mot trouvé à l'index milieu
+                resultat.add(milieu);
+                resultat.add(nbComparaisons);
+                return resultat;
             } else if (comparaison < 0) {
                 sup = milieu - 1; // Chercher dans la partie gauche
             } else {
@@ -204,8 +211,9 @@ public class Classification {
             }
         }
 
-        // Si le mot n'est pas trouvé, retourner un index négatif pour indiquer la position d'insertion
-        return -(inf + 1);
+        resultat.add(-(inf + 1));
+        resultat.add(nbComparaisons);
+        return resultat;
     }
 
 
@@ -260,7 +268,7 @@ public class Classification {
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
-            ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches, categorie);
+            ArrayList<PaireChaineEntier> dictionnaire = initDicoDicho(depeches, categorie);
             calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
