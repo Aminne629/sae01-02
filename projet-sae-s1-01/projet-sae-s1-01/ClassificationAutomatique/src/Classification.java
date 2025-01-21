@@ -123,6 +123,7 @@ public class Classification {
             // Liste qui contiendra les paires (mot, score)
             categorie = categorie.toUpperCase();
             ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
+            int nbComparaisons = 0;
 
             // Parcours de toutes les dépêches
             for (Depeche depeche : depeches) {
@@ -137,6 +138,7 @@ public class Classification {
                         // Vérification si le mot n'est pas déjà présent dans resultat
                         boolean present = false;
                         for (int i = 0; i<resultat.size() && !present ; i++) {  //j'ai utilisé une fonction que j'ai rajouté pour ne pas compter
+                            nbComparaisons++;
                             if (resultat.get(i).getChaine().equals(mot)) {                                          //les caractères spéciaux pour éviter les erreurs.
                                 present = true;
                             }
@@ -151,6 +153,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
+            System.out.println("nombre de comparaisons : " + nbComparaisons);
             return resultat;
         }
 
