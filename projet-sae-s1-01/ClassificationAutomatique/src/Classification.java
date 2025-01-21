@@ -110,8 +110,8 @@ public class Classification {
 
 
     public static boolean contientCaracteresSpeciaux(String mot) {
-        String nettoye = mot.replaceAll("[a-zA-Z0-9]", ""); // Retire toutes les lettres et chiffres
-        return !nettoye.isEmpty(); // Si la chaîne nettoyée n'est pas vide, il y avait des caractères spéciaux
+        String nettoyage = mot.replaceAll("[a-zA-Z0-9]", ""); // Retire toutes les lettres et chiffres
+        return !nettoyage.isEmpty(); // Si la chaîne nettoyée n'est pas vide, il y avait des caractères spéciaux
     }
 
 
