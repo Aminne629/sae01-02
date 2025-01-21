@@ -155,6 +155,61 @@ public class Classification {
         }
 
 
+    public static ArrayList<PaireChaineEntier> initDicoDicho(ArrayList<Depeche> depeches, String categorie) {
+        categorie = categorie.toUpperCase();
+        ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
+
+        // Parcours de toutes les dépêches
+        for (Depeche depeche : depeches) {
+            // Si la dépêche appartient à la catégorie demandée
+            if (depeche.getCategorie().equals(categorie)) {
+                // Récupération des mots de la dépêche
+                ArrayList<String> mots = depeche.getMots(); // La méthode getMots retourne directement une ArrayList<String>
+
+                // Parcours des mots de la dépêche
+                for (String mot : mots) {
+                    // Recherche dichotomique dans resultat pour trouver l'index du mot
+                    int index = rechercheDichotomique(resultat, mot);
+
+                    // Si le mot n'est pas trouvé (index négatif), on l'insère à la position appropriée
+                    if (index < 0) {
+                        index = -(index + 1); // Convertir l'index négatif en position d'insertion
+                        resultat.add(index, new PaireChaineEntier(mot, 0));
+                    }
+                }
+            }
+        }
+
+        // Retourner la liste contenant les paires (mot, score)
+        return resultat;
+    }
+
+    // Méthode de recherche dichotomique pour trouver un mot dans une liste triée
+    private static int rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
+        Utilitaire.triFusion(liste,0,liste.size()-1);
+        int inf = 0;
+        int sup = liste.size() - 1;
+
+        while (inf <= sup) {
+            int milieu = (inf + sup) / 2;
+            String chaineMilieu = liste.get(milieu).getChaine();
+
+            int comparaison = mot.compareTo(chaineMilieu);
+            if (comparaison == 0) {
+                return milieu; // Mot trouvé à l'index milieu
+            } else if (comparaison < 0) {
+                sup = milieu - 1; // Chercher dans la partie gauche
+            } else {
+                inf = milieu + 1; // Chercher dans la partie droite
+            }
+        }
+
+        // Si le mot n'est pas trouvé, retourner un index négatif pour indiquer la position d'insertion
+        return -(inf + 1);
+    }
+
+
+
 
     // La méthode calculScores met à jour les scores des mots dans dictionnaire
     public static void calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
@@ -203,26 +258,20 @@ public class Classification {
     }
 
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
-        ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
             ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches, categorie);
             calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
-                    PaireChaineEntier paireCour = new PaireChaineEntier(mot, poidsPourScore(paire.getEntier()));
-                    resultat.add(paireCour);
-                    //file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
-            }
-            Utilitaire.triFusion(resultat,0,resultat.size()-1);
-            for (PaireChaineEntier paire : resultat) {
-                file.write(paire.getChaine() + ":" + paire.getEntier() + "\n");
+                file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
+
 
             }
         } catch(IOException e){
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
     }
 
 
