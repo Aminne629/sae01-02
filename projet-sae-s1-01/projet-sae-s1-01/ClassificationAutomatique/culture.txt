@@ -1,8 +1,8 @@
-culture:4  
-art:4  
-musique:4  
-cinéma:4  
-séries:4  
+culture:3
+art:3  
+musique:3  
+cinéma:3
+séries:3 
 littérature:3  
 festivals:3  
 histoire:3  

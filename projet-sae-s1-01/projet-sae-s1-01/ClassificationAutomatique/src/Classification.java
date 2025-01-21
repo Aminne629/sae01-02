@@ -203,15 +203,21 @@ public class Classification {
     }
 
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
+        ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
             ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches, categorie);
             calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
+                    PaireChaineEntier paireCour = new PaireChaineEntier(mot, poidsPourScore(paire.getEntier()));
+                    resultat.add(paireCour);
+                    //file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
-                    file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
-
+            }
+            Utilitaire.triFusion(resultat,0,resultat.size()-1);
+            for (PaireChaineEntier paire : resultat) {
+                file.write(paire.getChaine() + ":" + paire.getEntier() + "\n");
 
             }
         } catch(IOException e){
