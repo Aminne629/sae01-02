@@ -63,7 +63,7 @@ public class Classification {
                 file.write(nombreFormate + ":" + chaineMax.toUpperCase() + "\n");
                 listResultat.add(new PaireChaineEntier(chaineMax, nombreMax));
             }
-
+            //test
 
             // Partie 2 : Analyse des catégories
             ArrayList<PaireChaineEntier> listePourLaMoyenne = new ArrayList<>();
