@@ -191,11 +191,11 @@ public class Classification {
     }
 
     public static int poidsPourScore(int score) {
-        if (score <=-5) {
+        if (score <=-2) {
             return 0; // Score très négatif : Poids faible
-        } else if (score <=-0) {
+        } else if (score <=0) {
             return 1;
-        } else if (score <= 5 ) {
+        } else if (score <= 2 ) {
             return 2; // Score modéré (négatif ou positif) : Poids moyen
         } else {
             return 3; // Score très positif : Poids élevé
