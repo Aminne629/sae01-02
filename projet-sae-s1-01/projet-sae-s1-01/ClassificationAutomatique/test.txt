@@ -2669,5 +2669,3 @@ appelé à " mettre les égos de côté " dans le sprint français qui quitte le
 .C ECONOMIE
 .T "Intelligence artificielle : des caméras intelligentes traquent les fraudeurs dans la grande distribution. Après les caisses automatiques, c'est maintenant l'intelligence artificielle qui va scruter vos faits et gestes dans les supermarchés grâce à des caméras détectant en temps réel les tentatives de fraude au moment où vous scannez vos produits. Dans le Var, le système est en test au sein d’un Intermarché avec des résultats plutôt encourageants."
 
-
-

@@ -27,7 +27,7 @@ avant:0
 qu:0
 il:0
 ne:0
-touche:1
+touche:0
 sol:1
 marquant:1
 une:0
@@ -37,8 +37,8 @@ l:0
 entreprise:0
 spatiale:3
 d:0
-elon:2
-musk:2
+elon:1
+musk:1
 y:0
 a:0
 305:2
@@ -93,7 +93,7 @@ avec:0
 tarification:0
 dynamique:0
 dans:0
-seconde:1
+seconde:0
 moitié:1
 xxᵉ:1
 siècle:1
@@ -173,7 +173,7 @@ explorer:1
 cette:0
 lune:3
 jovienne:2
-pourrait:1
+pourrait:0
 abriter:2
 océan:2
 gaz:1
@@ -287,8 +287,8 @@ réinterprètent:1
 musée:0
 quai:1
 branly:1
-objets:1
-collection:2
+objets:0
+collection:1
 claude:1
 dina:1
 lévi:1
@@ -384,7 +384,7 @@ explique:1
 alice:2
 lebreton:2
 carte:3
-blanche:3
+blanche:1
 budget:0
 2025:0
 soulagement:2
@@ -454,7 +454,7 @@ conditionner:2
 petits:1
 passereaux:2
 exposition:0
-géants:1
+géants:0
 toulouse:1
 animaux:1
 gigantesques:2
@@ -596,7 +596,7 @@ terme:2
 généralisées:2
 certaines:0
 entre:0
-elles:2
+elles:1
 incluent:2
 recours:0
 psychédéliques:2
@@ -665,10 +665,10 @@ scientifique:3
 notre:3
 devoir:2
 alléger:2
-poids:2
+poids:1
 financier:1
 diffusion:2
-directeur:1
+directeur:0
 honoraire:2
 cnrs:2
 denis:0
@@ -725,7 +725,7 @@ technologies:2
 genre:2
 contribué:2
 émanciper:2
-renforcer:1
+renforcer:0
 systèmes:2
 oppression:2
 ia:0
@@ -739,8 +739,8 @@ rédaction:1
 sujets:2
 correction:2
 devoirs:2
-intelligence:1
-artificielle:1
+intelligence:0
+artificielle:0
 offrir:2
 aide:1
 personnalisée:2
@@ -752,7 +752,7 @@ fabrication:1
 distribution:1
 anciens:1
 tel:1
-si:1
+si:0
 stratégique:2
 marché:0
 génériques:2
@@ -903,7 +903,7 @@ bénéfique:1
 origine:2
 blessures:0
 joueurs:0
-apprendre:1
+apprendre:0
 prévenir:1
 lauréate:1
 nobel:1
@@ -911,7 +911,7 @@ chimie:2
 académie:3
 suédoise:1
 visible:2
-tendance:1
+tendance:0
 forte:1
 dernières:0
 primant:2
@@ -981,7 +981,7 @@ secrets:1
 fonctionnement:2
 cet:0
 organe:2
-reste:1
+reste:0
 mystérieux:1
 rencontre:0
 citrouilles:2
@@ -1049,7 +1049,7 @@ thérapeutique:1
 deviennent:2
 sans:0
 recul:1
-ni:2
+ni:1
 preuve:2
 efficacité:2
 produit:1
@@ -1077,13 +1077,13 @@ sucre:2
 climat:1
 retarde:2
 action:1
-climatique:2
+climatique:1
 universitaires:1
 privilégient:2
 détriment:1
 solutions:2
 concrètes:2
-réchauffement:2
+réchauffement:1
 déplore:1
 ex:0
 professeure:2
@@ -1126,7 +1126,7 @@ chinoise:1
 mercredi:0
 faire:0
 atterrir:2
-ici:1
+ici:0
 équipage:2
 construire:1
 falsification:2
@@ -1157,7 +1157,7 @@ priori:2
 éloignés:2
 langues:1
 inextricablement:2
-liés:2
+liés:1
 rappelle:0
 etienne:2
 ghys:2
@@ -1230,7 +1230,7 @@ anémie:2
 génétique:2
 enfin:2
 dépistée:2
-tous:1
+tous:0
 nés:2
 partir:0
 novembre:0
@@ -1383,7 +1383,7 @@ spécialistes:2
 insistent:2
 cohérence:2
 ensemble:1
-résultats:2
+résultats:1
 nombre:2
 trop:0
 liens:2
@@ -1468,7 +1468,7 @@ poser:1
 2026:1
 toutes:0
 localisées:2
-proximité:2
+proximité:1
 pôle:2
 lorraine:2
 daston:2
@@ -1519,7 +1519,7 @@ danger:1
 autrui:2
 tromperie:1
 aggravée:2
-x:1
+x:0
 mardi:0
 devant:0
 tribunal:0

@@ -94,9 +94,9 @@ royal:1
 voire:1
 proche:1
 banlieue:2
-mort:3
+mort:2
 compositeur:3
-chef:1
+chef:0
 orchestre:2
 leif:2
 segerstam:2
@@ -146,7 +146,7 @@ juillet:0
 2023:0
 stade:0
 vélodrome:2
-marseille:1
+marseille:0
 planète:2
 chaîne:2
 télévisions:2
@@ -183,7 +183,7 @@ premier:0
 candidat:1
 écologiste:0
 élection:1
-présidentielle:2
+présidentielle:1
 1974:1
 joe:1
 sacco:1
@@ -250,7 +250,7 @@ sculptrice:2
 photographe:2
 39:1
 avait:0
-reçu:2
+reçu:1
 aware:2
 2021:2
 séries:3
@@ -331,7 +331,7 @@ eustache:2
 cité:0
 bayeux:2
 formation:1
-apprendre:1
+apprendre:0
 reportage:2
 guerre:0
 pendant:1
@@ -344,7 +344,7 @@ sont:0
 formés:2
 travail:0
 zone:2
-dangereuse:2
+dangereuse:1
 afin:0
 limiter:2
 risques:0
@@ -381,8 +381,8 @@ réinterprètent:1
 musée:3
 quai:1
 branly:1
-objets:2
-collection:1
+objets:1
+collection:0
 claude:1
 dina:1
 lévi:1
@@ -439,7 +439,7 @@ centre:1
 pompidou:2
 établissement:0
 parisien:0
-expose:2
+expose:1
 cinquantaine:2
 œuvres:3
 récentes:1
@@ -546,10 +546,10 @@ voies:2
 désir:2
 impénétrables:2
 plongeant:2
-quotidien:3
+quotidien:1
 village:2
 perturbé:2
-homme:2
+homme:1
 réalisateur:3
 magistral:2
 tragédie:2
@@ -587,7 +587,7 @@ exemplaire:2
 peinture:2
 hyperréaliste:2
 misère:2
-solidarité:2
+solidarité:1
 populaire:0
 long:0
 métrage:2
@@ -686,7 +686,7 @@ buenos:2
 aires:2
 lecture:1
 ténèbres:2
-compagnie:2
+compagnie:1
 nord:0
 sentinelle:2
 maniac:2
@@ -724,7 +724,7 @@ yayoi:2
 kusama:2
 mickalene:2
 thomas:1
-autre:1
+autre:0
 facette:2
 perspective:1
 celui:1
@@ -813,7 +813,7 @@ système:0
 consiste:2
 proposer:1
 billets:2
-variables:2
+variables:1
 moyens:1
 tirer:2
 davantage:0
@@ -843,7 +843,7 @@ comédienne:3
 réalisatrice:2
 niki:2
 sallette:2
-invitée:2
+invitée:1
 podcast:2
 goût:2
 m:0
@@ -859,7 +859,7 @@ contemporain:2
 3e:1
 événements:1
 fleurissent:2
-gratuit:2
+gratuit:1
 disséminé:2
 capitale:0
 salons:2
@@ -873,7 +873,7 @@ maison:0
 mondes:1
 africains:2
 monnaie:2
-inquiète:1
+inquiète:0
 salariés:0
 validée:2
 arrivée:2
@@ -992,7 +992,7 @@ diffusée:2
 partir:0
 2001:2
 apéro:2
-françois:1
+françois:0
 civil:2
 j:0
 ai:0
@@ -1003,7 +1003,7 @@ coqueluche:2
 confirme:1
 statut:1
 romantique:2
-garde:1
+garde:0
 pieds:2
 adore:2
 grimpe:2
@@ -1063,7 +1063,7 @@ béarn:2
 architecture:2
 handicap:2
 rivehaute:2
-pyrénées:2
+pyrénées:1
 atlantiques:2
 institut:0
 thérapeutique:1
@@ -1132,7 +1132,7 @@ programmes:2
 ré:2
 différé:2
 alimentation:0
-demain:2
+demain:1
 immersion:2
 malades:1
 intelligence:0
@@ -1153,7 +1153,7 @@ permises:2
 ia:1
 mais:0
 aussi:0
-menaces:1
+menaces:0
 elle:0
 peser:1
 filière:2
@@ -1179,7 +1179,7 @@ intégrés:2
 accor:2
 arena:2
 fugees:2
-font:1
+font:0
 taire:2
 lauryn:2
 hill:2
@@ -1192,7 +1192,7 @@ drôle:2
 paroissien:2
 renoncé:2
 prêtre:2
-jeunesse:2
+jeunesse:1
 mystérieux:1
 abbé:1
 trouble:1
@@ -1278,7 +1278,7 @@ cherfi:2
 chanteur:3
 on:0
 veut:0
-là:2
+là:1
 dégagent:2
 parents:2
 personnalité:2
@@ -1345,7 +1345,7 @@ généré:2
 logiciel:1
 philippe:0
 labro:2
-tendance:1
+tendance:0
 garder:1
 bonnes:2
 choses:2
@@ -1442,7 +1442,7 @@ faons:2
 synthèse:2
 organisation:0
 paz:2
-considère:1
+considère:0
 piétine:2
 valeurs:2
 felix:2
@@ -1468,10 +1468,10 @@ milliards:0
 échappent:2
 etat…:2
 trace:2
-fraudeurs:2
+fraudeurs:1
 fisc:1
 interdite:2
-montre:2
+montre:1
 paiement:1
 liquide:2
 ancienne:1
@@ -1486,10 +1486,10 @@ demeure:1
 impuissant:1
 bien:0
 opération:1
-trump:1
+trump:0
 espions:2
 russes:2
-conquête:1
+conquête:0
 amérique:0
 5:0
 parti:0
@@ -1554,7 +1554,7 @@ gilmore:2
 bnf:2
 appelle:0
 dons:2
-acquérir:2
+acquérir:1
 planches:2
 originales:2
 bête:1
