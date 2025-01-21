@@ -222,14 +222,14 @@ public class Classification {
 
 
     public static void main(String[] args) {
-
+        long starttime = System.currentTimeMillis();
         //Chargement des dépêches en mémoire
         System.out.println("chargement des dépêches");
         ArrayList<Depeche> depeches = lectureDepeches("./test.txt");
 
-        for (int i = 0; i < depeches.size(); i++) {
-            depeches.get(i).afficher();
-        }
+//        for (int i = 0; i < depeches.size(); i++) {
+//            depeches.get(i).afficher();
+//        }
 
 
 
@@ -307,7 +307,13 @@ public class Classification {
         listCategorie.add(culture);
         classementDepeches(depeches,listCategorie,"fichier-reponse-automatique");
 
+        long endtime = System.currentTimeMillis();
+        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+
+
+
     }
+
 
 }
 
