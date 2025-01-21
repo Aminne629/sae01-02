@@ -157,6 +157,7 @@ public class Classification {
         ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
         int nbComparaisons=0;
 
+
         // Parcours de toutes les dépêches
         for (Depeche depeche : depeches) {
             // Si la dépêche appartient à la catégorie demandée
@@ -164,13 +165,15 @@ public class Classification {
             if (depeche.getCategorie().equals(categorie)) {
                 // Récupération des mots de la dépêche
                 ArrayList<String> mots = depeche.getMots(); // La méthode getMots retourne directement une ArrayList<String>
-
+                Utilitaire.triFusion(mots,0, mots.size()-1);
                 // Parcours des mots de la dépêche
                 for (String mot : mots) {
                     // Recherche dichotomique dans resultat pour trouver l'index du mot ( il est à l'indice 0);
-                    int index = (rechercheDichotomique(resultat, mot)).get(0);
+                    ArrayList<Integer> recherche = rechercheDichotomique(resultat, mot);
+                    int index = recherche.get(0);
                     //on ajoute le nombre de comparaisons qui est retourné à l'indice 1
-                    nbComparaisons = nbComparaisons + (rechercheDichotomique(resultat, mot)).get(1);
+                    nbComparaisons += recherche.get(1);
+
                     // Si le mot n'est pas trouvé (index négatif), on l'insère à la position appropriée
                     if (index < 0) {
                         index = -(index + 1); // Convertir l'index négatif en position d'insertion
@@ -189,7 +192,6 @@ public class Classification {
     // et renvoie le nb de comparaisons à l'indice 1
     private static ArrayList<Integer> rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
         int nbComparaisons=1;
-        Utilitaire.triFusion(liste,0,liste.size()-1);
         int inf = 0;
         int sup = liste.size() - 1;
         ArrayList<Integer> resultat = new ArrayList<>();
@@ -372,6 +374,12 @@ public class Classification {
 
         long endtime = System.currentTimeMillis();
         System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+
+        knn.triDepeche(depeches);
+        for (int i = 0; i < depeches.size(); i++) {
+            System.out.println(i+":"+depeches.get(i).getCategorie());
+            //ecrire dans un fichier à la place de sout
+        }
 
 
 
