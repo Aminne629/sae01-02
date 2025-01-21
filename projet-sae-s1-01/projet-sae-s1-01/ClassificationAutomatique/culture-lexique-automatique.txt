@@ -38,7 +38,7 @@ nos:3
 choix:1
 festivals:2
 concerts:2
-a:0
+::0
 jazz:3
 électro:2
 pop:3

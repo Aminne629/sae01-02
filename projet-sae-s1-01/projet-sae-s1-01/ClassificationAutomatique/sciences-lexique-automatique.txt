@@ -316,7 +316,7 @@ sa:0
 épouse:1
 leur:0
 objectif:1
-a:0
+::0
 réveiller:1
 culture:0
 endormie:1

@@ -23,7 +23,7 @@ des:0
 années:0
 premières:0
 fois:0
-a:0
+::0
 récits:2
 moments:2
 charnières:2
