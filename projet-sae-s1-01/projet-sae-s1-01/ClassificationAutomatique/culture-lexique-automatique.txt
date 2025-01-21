@@ -30,7 +30,7 @@ directe:1
 occasion:2
 sa:0
 carte:0
-blanche:0
+blanche:1
 festival:2
 d:0
 automne:2
@@ -38,7 +38,7 @@ nos:2
 choix:1
 festivals:2
 concerts:2
-a:0
+::0
 jazz:2
 électro:2
 pop:3
@@ -183,7 +183,7 @@ premier:0
 candidat:1
 écologiste:1
 élection:1
-présidentielle:1
+présidentielle:2
 1974:1
 joe:1
 sacco:1
@@ -250,7 +250,7 @@ sculptrice:2
 photographe:2
 39:1
 avait:0
-reçu:1
+reçu:2
 aware:2
 2021:2
 séries:2

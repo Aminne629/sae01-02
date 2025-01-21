@@ -209,13 +209,10 @@ public class Classification {
             calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
-                if (mot.equalsIgnoreCase(":")){
-                    mot = "a";
-                    file.write(mot + ":" + 0 + "\n");
-                } else {
+
                     file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
-                }
+
             }
         } catch(IOException e){
                 e.printStackTrace();

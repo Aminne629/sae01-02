@@ -1,7 +1,7 @@
 flottes:2
 d:0
 entreprise:3
-a:0
+::0
 les:0
 petites:2
 voitures:3
@@ -502,7 +502,7 @@ chinoises:2
 face:0
 protectionnisme:2
 européen:2
-grands:1
+grands:2
 noué:2
 alliances:2
 concurrents:2
@@ -889,7 +889,7 @@ déficit:1
 hors:1
 promises:2
 donald:2
-trump:1
+trump:2
 impôts:1
 détaxe:2
 supplémentaires:2
@@ -1327,7 +1327,7 @@ bardella:0
 lise:1
 boëll:1
 prestigieuse:1
-maison:0
+maison:1
 hachette:1
 signer:1
 désormais:1
@@ -1339,7 +1339,7 @@ rn:0
 villiers:1
 suscite:1
 ire:1
-certains:0
+certains:1
 cascade:1
 services:1
 personnes:0
@@ -1813,7 +1813,7 @@ terres:2
 homme:0
 israélien:1
 intéressent:2
-washington:1
+washington:2
 lever:2
 pèsent:2
 artificialisation:2

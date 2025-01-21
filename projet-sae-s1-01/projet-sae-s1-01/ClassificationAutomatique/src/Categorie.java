@@ -36,15 +36,23 @@ public class Categorie {
             while (scanner.hasNextLine()) {
                 String ligne = scanner.nextLine();
 
-                // Supposons que la ligne soit au format "mot:valeur"
+                // format "mot:valeur"
                 int indexDeuxPoints = ligne.indexOf(':');
                 if (indexDeuxPoints != -1) {
-                    String chaine = ligne.substring(0, indexDeuxPoints).trim(); // Partie avant ':'
-                    int entier = Integer.parseInt(ligne.substring(indexDeuxPoints + 1).trim()); // Partie après ':'
+                    String chaine = ligne.substring(0, indexDeuxPoints).trim(); //.trim() supprime les espaces, et on va de 0 à indexdeuxpoint donc ici ':'
+                    String valeurStr = ligne.substring(indexDeuxPoints + 1).trim(); // Partie après ':'
+                    if (!chaine.isEmpty() && !valeurStr.isEmpty()) {
+                        try {
+                            int entier = Integer.parseInt(valeurStr);
 
-                    // Ajout de la paire au lexique
-                    PaireChaineEntier paire = new PaireChaineEntier(chaine, entier);
-                    lexique.add(paire);
+                            // Ajout de la paire au lexique
+                            PaireChaineEntier paire = new PaireChaineEntier(chaine, entier);
+                            lexique.add(paire);
+                        } catch (NumberFormatException e) {
+                            // On ignore les lignes où la partie après ':' n'est pas un entier valide
+                            System.out.println(": donc ignoré.");
+                        }
+                    }
                 }
             }
 

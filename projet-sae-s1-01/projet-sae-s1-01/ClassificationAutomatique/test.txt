@@ -2498,33 +2498,3 @@ appelé à " mettre les égos de côté " dans le sprint français qui quitte le
 .D 27/10/2024
 .C SPORT
 .T Tennis : Giovanni Mpetshi Perricard remporte son premier tournoi ATP 500. Le Français, 50ᵉ joueur mondial, a dominé l'Américain Ben Shelton en deux sets (6-4, 7-6), à Bâle (Suisse), dimanche 27 octobre.
-
-.N 501
-.D 21/01/2025
-.C POLITIQUE
-.T Pour inaugurer son retour à la Maison-Blanche, Donald Trump a réuni un parterre de personnalités influentes, lundi 20 janvier, à Washington, dont les grands patrons de la tech.
-
-.N 502
-.D 21/01/2025
-.C POLITIQUE
-.T Contrairement à ses prédécesseurs, le Premier ministre a décidé de ne pas relire les interviews de ses ministres. Un gage de confiance, qui le protège aussi de certains coups.
-
-.N 503
-.D 20/01/2025
-.C POLITIQUE
-.T "Je ne suis pas très fatigable, je suis en pleine forme", a affirmé le Premier ministre.
-
-.N 504
-.D 20/01/2025
-.C POLITIQUE
-.T L'ancien chef de l'Etat était, à l'époque de sa visite, ministre de l'Intérieur. Il est soupçonné d'avoir à ce moment-là évoqué un financement de sa campagne pour la présidentielle de 2007. Des accusations qu'il a qualifiées de "grotesques" à l'audience, lundi.
-
-.N 505
-.D 20/01/2025
-.C POLITIQUE
-.T Xavier Roca, conseiller municipal d’opposition à Pezilla-la-Rivière, près de Perpignan, a porté plainte après avoir reçu la semaine dernière une lettre anonyme, contenant des menaces de mort.
-
-.N 506
-.D 20/01/2025
-.C POLITIQUE
-.T Le président souhaite des propositions d'ici à mai pour "permettre à une jeunesse volontaire d'apprendre avec les armées et d'en renforcer les rangs".

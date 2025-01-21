@@ -109,7 +109,7 @@ déjà:0
 lancés:1
 depuis:0
 deux:0
-financement:0
+financement:1
 jeunes:0
 entreprises:0
 new:1
@@ -316,7 +316,7 @@ sa:0
 épouse:1
 leur:0
 objectif:1
-a:0
+::0
 réveiller:1
 culture:0
 endormie:1
@@ -347,7 +347,7 @@ appui:1
 aux:0
 soins:2
 psychiatrie:2
-maison:0
+maison:1
 lyon:1
 chorégraphique:2
 accompagne:1
@@ -412,7 +412,7 @@ chronique:0
 pourquoi:2
 africaine:2
 elle:0
-aussi:0
+aussi:1
 invisible:2
 ?:1
 paysage:2
