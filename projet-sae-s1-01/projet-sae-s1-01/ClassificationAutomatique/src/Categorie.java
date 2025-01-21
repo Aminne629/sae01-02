@@ -50,7 +50,7 @@ public class Categorie {
                             lexique.add(paire);
                         } catch (NumberFormatException e) {
                             // On ignore les lignes où la partie après ':' n'est pas un entier valide
-                            System.out.println(": donc ignoré.");
+                            System.out.println("Cette ligne n'est pas convertie en entier valide.");
                         }
                     }
                 }
