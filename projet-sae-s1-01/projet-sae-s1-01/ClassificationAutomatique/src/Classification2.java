@@ -295,31 +295,52 @@ public class Classification2 {
 
         // Création de nouveaux objets Categorie a partir des categories decouvertes
         ArrayList<Categorie> categories = new ArrayList<>();
-        for (String nomCategorie : categoriesTrouvees) {
-            categories.add(new Categorie(nomCategorie));
+        for (int i = 0; i < categoriesTrouvees.size(); i++) {
+            categories.add(new Categorie(categoriesTrouvees.get(i)));
         }
         return categories;
     }
 
-
-
-
-
-
+    public static void classificationAuto(String nomFichierDepeches, String nomFichierReponse) {
+        ArrayList<Depeche> depeches = lectureDepeches(nomFichierDepeches); // Cree l'arraylist de depeches
+        ArrayList<Categorie> categories = decouvrirCategories(depeches); //cree l'array list de categories decouvertes automatiquement
+        for (Categorie categorie : categories) {
+            categorie.initLexique(categorie.getNom().toLowerCase()+"-lexique2-automatique");
+            generationLexique(depeches, categorie.getNom(), categorie.getNom()+"-lexique2-automatique");
+        }
+        classementDepeches(depeches, categories, nomFichierReponse); //cree le classement
+    }
 
 
 
 
 
     public static void main(String[] args) {
-        //on extrait les categories et classe les depeches
-        ArrayList<Depeche> depeches = lectureDepeches("test2.txt");
-        ArrayList<Categorie> categories = decouvrirCategories(depeches);
-        classementDepeches(depeches, categories, "test2.txt");
+        //on extrait les categories et classe les depeches;
+        System.out.println("Chargement des depeches");
+        ArrayList<Depeche> depeches = lectureDepeches("./test2.txt"); //creation fichier depeches
+        ArrayList<Categorie> categories = decouvrirCategories(depeches); //creation des categories
 
+        ArrayList<Depeche> anciennedepeches = lectureDepeches("./test.txt");
+        ArrayList<Categorie> anciennecategories = decouvrirCategories(anciennedepeches); //on rajoute les anciennes classes
+
+
+        System.out.println("Initialisation des lexiques");
         for (Categorie categorie : categories) {
-            categorie.initLexique(categorie.getNom()+"-lexique2-automatique.txt");
+            generationLexique(depeches,categorie.getNom(),"./"+categorie.getNom().toLowerCase()+"-lexique2-automatique");
         }
+        for (int i =0; i < categories.size(); i++) {
+            categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
+        }
+
+
+
+
+
+
+
+        }
+
 
 
 
@@ -327,7 +348,7 @@ public class Classification2 {
     }
 
 
-}
+
 
 
 
