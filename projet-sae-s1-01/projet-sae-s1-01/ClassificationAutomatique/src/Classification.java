@@ -396,7 +396,7 @@ public class Classification {
 
         System.out.print("On va tester le méthode KNN, pour cela entrez un nombre eniter K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
         int k = lecteur.nextInt();lecteur.nextLine();
-            knn.triDepecheKnn(depeches);
+//            knn.triDepecheKnn(depeches);
             for (Depeche depechett : depeches){
                     ArrayList<Depeche> voisin;
                     voisin = knn.voisinsK(depeches,depechett,k);

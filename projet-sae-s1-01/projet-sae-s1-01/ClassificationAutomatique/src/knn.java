@@ -211,37 +211,84 @@ public class knn {
 
 
 
-    // Renvoie une ArrayList qui contient les k voisins de la dépêche demandée
+//    // Renvoie une ArrayList qui contient les k voisins de la dépêche demandée
+//    public static ArrayList<Depeche> voisinsK(ArrayList<Depeche> depeches, Depeche depecheCour, int k) {
+//        // Trouver l'indice de la dépêche courante
+//        int indiceDepecheCour = -1;
+//        for (int i = 0; i < depeches.size(); i++) {
+//            if (depeches.get(i).equals(depecheCour)) {
+//                indiceDepecheCour = i;
+//                break;
+//            }
+//        }
+//
+//        // Si la dépêche n'a pas été trouvée, retourner une liste vide
+//        if (indiceDepecheCour == -1) {
+//            return new ArrayList<>();
+//        }
+//
+//        // Créer une liste pour les voisins
+//        ArrayList<Depeche> voisinsK = new ArrayList<>();
+//
+//        // Ajouter les k voisins suivants si disponibles
+//        for (int j = 1; j <= k; j++) {
+//            int indiceVoisin = indiceDepecheCour + j;
+//            if (indiceVoisin < depeches.size()) {
+//                voisinsK.add(depeches.get(indiceVoisin));
+//            } else {
+//                break; // Sortir si on dépasse la taille de la liste
+//            }
+//        }
+//
+//        return voisinsK;
+//    }
+
     public static ArrayList<Depeche> voisinsK(ArrayList<Depeche> depeches, Depeche depecheCour, int k) {
         // Trouver l'indice de la dépêche courante
-        int indiceDepecheCour = -1;
-        for (int i = 0; i < depeches.size(); i++) {
-            if (depeches.get(i).equals(depecheCour)) {
-                indiceDepecheCour = i;
-                break;
-            }
-        }
+        int indiceDepecheCour = depeches.indexOf(depecheCour);
 
-        // Si la dépêche n'a pas été trouvée, retourner une liste vide
         if (indiceDepecheCour == -1) {
-            return new ArrayList<>();
+            throw new IllegalArgumentException("La dépêche courante n'existe pas dans la liste.");
         }
 
-        // Créer une liste pour les voisins
-        ArrayList<Depeche> voisinsK = new ArrayList<>();
+        // Définir la plage des dépêches avec lesquelles comparer
+        int startIndex = indiceDepecheCour + 1; // Ignorer la dépêche courante
+        int endIndex = Math.min(startIndex + 30, depeches.size()); // Limiter à 30 suivantes
 
-        // Ajouter les k voisins suivants si disponibles
-        for (int j = 1; j <= k; j++) {
-            int indiceVoisin = indiceDepecheCour + j;
-            if (indiceVoisin < depeches.size()) {
-                voisinsK.add(depeches.get(indiceVoisin));
+        // Initialiser une liste pour les meilleurs voisins et leurs scores
+        ArrayList<Depeche> meilleursVoisins = new ArrayList<>();
+        ArrayList<Integer> meilleursScores = new ArrayList<>();
+
+        // Comparer avec les dépêches dans la plage définie
+        for (int i = startIndex; i < endIndex; i++) {
+            Depeche depeche = depeches.get(i);
+            int score = motsCommuns(depeche, depecheCour); // Calcul du score
+
+            if (meilleursVoisins.size() < k) {
+                // Ajouter directement si on n'a pas encore trouvé k voisins
+                meilleursVoisins.add(depeche);
+                meilleursScores.add(score);
             } else {
-                break; // Sortir si on dépasse la taille de la liste
+                // Trouver l'indice du voisin avec le plus faible score
+                int minIndex = 0;
+                for (int j = 1; j < meilleursScores.size(); j++) {
+                    if (meilleursScores.get(j) < meilleursScores.get(minIndex)) {
+                        minIndex = j;
+                    }
+                }
+
+                // Remplacer si le score actuel est meilleur que le plus faible score
+                if (score > meilleursScores.get(minIndex)) {
+                    meilleursVoisins.set(minIndex, depeche);
+                    meilleursScores.set(minIndex, score);
+                }
             }
         }
 
-        return voisinsK;
+        return meilleursVoisins;
     }
+
+
 
     public static String categorieLaPlusPresente(ArrayList<Categorie> categories) {
         // Liste pour stocker les noms de catégories déjà rencontrés
