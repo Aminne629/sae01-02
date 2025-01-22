@@ -300,16 +300,7 @@ public class Classification2 {
         }
         return categories;
     }
-
-    public static void classificationAuto(String nomFichierDepeches, String nomFichierReponse) {
-        ArrayList<Depeche> depeches = lectureDepeches(nomFichierDepeches); // Cree l'arraylist de depeches
-        ArrayList<Categorie> categories = decouvrirCategories(depeches); //cree l'array list de categories decouvertes automatiquement
-        for (Categorie categorie : categories) {
-            categorie.initLexique(categorie.getNom().toLowerCase()+"-lexique2-automatique");
-            generationLexique(depeches, categorie.getNom(), categorie.getNom()+"-lexique2-automatique");
-        }
-        classementDepeches(depeches, categories, nomFichierReponse); //cree le classement
-    }
+    
 
 
 
@@ -321,9 +312,6 @@ public class Classification2 {
         ArrayList<Depeche> depeches = lectureDepeches("./test2.txt"); //creation fichier depeches
         ArrayList<Categorie> categories = decouvrirCategories(depeches); //creation des categories
 
-        ArrayList<Depeche> anciennedepeches = lectureDepeches("./test.txt");
-        ArrayList<Categorie> anciennecategories = decouvrirCategories(anciennedepeches); //on rajoute les anciennes classes
-
 
         System.out.println("Initialisation des lexiques");
         for (Categorie categorie : categories) {
@@ -332,6 +320,7 @@ public class Classification2 {
         for (int i =0; i < categories.size(); i++) {
             categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
         }
+        classementDepeches(depeches, categories, "./fichier-reponses2");
 
 
 
