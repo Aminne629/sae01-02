@@ -222,12 +222,13 @@ public class Classification {
 
 
     // La méthode calculScores met à jour les scores des mots dans dictionnaire
-    public static void calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
+    public static int calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
+        int nbCompairaisons = 1;
         categorie = categorie.toUpperCase();
         // Parcours de toutes les dépêches
         for (int i = 0; i < depeches.size(); i++) {
             Depeche depecheCourante = depeches.get(i);
-
+            nbCompairaisons++;
             // Vérification si la dépêche appartient à la catégorie demandée
             boolean estDansLaCategorie = depecheCourante.getCategorie().equals(categorie);
 
@@ -236,12 +237,15 @@ public class Classification {
 
             // Parcours des mots de la dépêche
             for (int j = 0; j < mots.size(); j++) {
+                nbCompairaisons++;
                 String motDeLaDepeche = mots.get(j);
                 boolean present = false;
                 // Parcours du dictionnaire pour trouver la PaireChaineEntier associée au mot
                 for (int k = 0; k < dictionnaire.size() && !present; k++) {
+                    nbCompairaisons++;
                     PaireChaineEntier paire = dictionnaire.get(k);
                     if (paire.getChaine().equals(motDeLaDepeche)) {
+                        nbCompairaisons++;
                         // Si la dépêche appartient à la catégorie, incrémenter le score
                         if (estDansLaCategorie) {
                             paire.setEntier(paire.getEntier() + 1);  // Incrémentation
@@ -253,6 +257,8 @@ public class Classification {
                 }
             }
         }
+
+        return nbCompairaisons;
     }
 
     public static int poidsPourScore(int score) {
@@ -271,14 +277,14 @@ public class Classification {
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
             ArrayList<PaireChaineEntier> dictionnaire = initDicoDicho(depeches, categorie);
-            calculScores(depeches, categorie, dictionnaire);
+            int nbComparaisons = calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
 
                 file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
-
             }
+            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
         } catch(IOException e){
             e.printStackTrace();
         }
