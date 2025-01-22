@@ -41,7 +41,7 @@ public class Classification {
         return depeches;
     }
 
-
+    //cette fonction permet de creer les fichiers reponses et de calculer le pourcentage
     public static void classementDepeches(ArrayList<Depeche> depeches, ArrayList<Categorie> categories, String nomFichier) {
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
@@ -110,24 +110,18 @@ public class Classification {
     }
 
 
-    public static boolean contientCaracteresSpeciaux(String mot) {
-        String nettoyage = mot.replaceAll(":", ""); // Retire toutes les lettres et chiffres
-        return !nettoyage.isEmpty(); // Si la chaîne nettoyée n'est pas vide, il y avait des caractères spéciaux
-    }
-
-
-
 
     // La méthode initDico retourne une liste de PaireChaineEntier
         public static ArrayList<PaireChaineEntier> initDico(ArrayList<Depeche> depeches, String categorie) {
+            int nbComparaisons = 0;
             // Liste qui contiendra les paires (mot, score)
             categorie = categorie.toUpperCase();
             ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
-            int nbComparaisons = 0;
 
             // Parcours de toutes les dépêches
             for (Depeche depeche : depeches) {
                 // Si la dépêche appartient à la catégorie demandée
+                nbComparaisons ++;
                 if (depeche.getCategorie().equals(categorie)) {
                     // Récupération des mots de la dépêche
                     ArrayList<String> mots = depeche.getMots();  // La méthode getMots retourne directement une ArrayList<String>
@@ -139,7 +133,7 @@ public class Classification {
                         boolean present = false;
                         for (int i = 0; i<resultat.size() && !present ; i++) {  //j'ai utilisé une fonction que j'ai rajouté pour ne pas compter
                             nbComparaisons++;
-                            if (resultat.get(i).getChaine().equals(mot)) {                                          //les caractères spéciaux pour éviter les erreurs.
+                            if (resultat.get(i).getChaine().equals(mot)) {//les caractères spéciaux pour éviter les erreurs.
                                 present = true;
                             }
                         }
@@ -153,7 +147,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
-            System.out.println("nombre de comparaisons : " + nbComparaisons);
+            System.out.println(nbComparaisons);
             return resultat;
         }
 
@@ -161,18 +155,24 @@ public class Classification {
     public static ArrayList<PaireChaineEntier> initDicoDicho(ArrayList<Depeche> depeches, String categorie) {
         categorie = categorie.toUpperCase();
         ArrayList<PaireChaineEntier> resultat = new ArrayList<>();
+        int nbComparaisons=0;
+
 
         // Parcours de toutes les dépêches
         for (Depeche depeche : depeches) {
             // Si la dépêche appartient à la catégorie demandée
+            nbComparaisons++;
             if (depeche.getCategorie().equals(categorie)) {
                 // Récupération des mots de la dépêche
                 ArrayList<String> mots = depeche.getMots(); // La méthode getMots retourne directement une ArrayList<String>
-
+                Utilitaire.triFusion(mots,0, mots.size()-1);
                 // Parcours des mots de la dépêche
                 for (String mot : mots) {
-                    // Recherche dichotomique dans resultat pour trouver l'index du mot
-                    int index = rechercheDichotomique(resultat, mot);
+                    // Recherche dichotomique dans resultat pour trouver l'index du mot ( il est à l'indice 0);
+                    ArrayList<Integer> recherche = rechercheDichotomique(resultat, mot);
+                    int index = recherche.get(0);
+                    //on ajoute le nombre de comparaisons qui est retourné à l'indice 1
+                    nbComparaisons += recherche.get(1);
 
                     // Si le mot n'est pas trouvé (index négatif), on l'insère à la position appropriée
                     if (index < 0) {
@@ -182,24 +182,30 @@ public class Classification {
                 }
             }
         }
-
+        System.out.println(nbComparaisons);
         // Retourner la liste contenant les paires (mot, score)
         return resultat;
     }
 
     // Méthode de recherche dichotomique pour trouver un mot dans une liste triée
-    private static int rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
-        Utilitaire.triFusion(liste,0,liste.size()-1);
+    //renvoie l'indice du mot ou alors l'indice ou il faut l'insérer grace à une technique d'inversion à l'indice 0
+    // et renvoie le nb de comparaisons à l'indice 1
+    private static ArrayList<Integer> rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
+        int nbComparaisons=1; //au cas ou on ne rentre pas dans la boucle
         int inf = 0;
         int sup = liste.size() - 1;
+        ArrayList<Integer> resultat = new ArrayList<>();
 
         while (inf <= sup) {
+            nbComparaisons++;
             int milieu = (inf + sup) / 2;
             String chaineMilieu = liste.get(milieu).getChaine();
-
             int comparaison = mot.compareTo(chaineMilieu);
+            nbComparaisons++;
             if (comparaison == 0) {
-                return milieu; // Mot trouvé à l'index milieu
+                resultat.add(milieu);
+                resultat.add(nbComparaisons);
+                return resultat;
             } else if (comparaison < 0) {
                 sup = milieu - 1; // Chercher dans la partie gauche
             } else {
@@ -207,8 +213,9 @@ public class Classification {
             }
         }
 
-        // Si le mot n'est pas trouvé, retourner un index négatif pour indiquer la position d'insertion
-        return -(inf + 1);
+        resultat.add(-(inf + 1));
+        resultat.add(nbComparaisons);
+        return resultat;
     }
 
 
@@ -263,7 +270,7 @@ public class Classification {
     public static void generationLexique(ArrayList<Depeche> depeches, String categorie, String nomFichier) {
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
-            ArrayList<PaireChaineEntier> dictionnaire = initDico(depeches, categorie);
+            ArrayList<PaireChaineEntier> dictionnaire = initDicoDicho(depeches, categorie);
             calculScores(depeches, categorie, dictionnaire);
             for (PaireChaineEntier paire : dictionnaire) {
                 String mot = paire.getChaine();
@@ -283,7 +290,9 @@ public class Classification {
         long starttime = System.currentTimeMillis();
         //Chargement des dépêches en mémoire
         System.out.println("chargement des dépêches");
-        ArrayList<Depeche> depeches = lectureDepeches("./test.txt");
+        ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
+        ArrayList<Depeche> test = lectureDepeches("./test.txt");
+
 
 //        for (int i = 0; i < depeches.size(); i++) {
 //            depeches.get(i).afficher();
@@ -352,26 +361,39 @@ public class Classification {
         }
         System.out.println("Création automatique des lexiques terminée.");
 
-        listCategorie.clear();
+//        listCategorie.clear();
         sport.initLexique("./sport-lexique-automatique.txt");
         economie.initLexique("./economie-lexique-automatique.txt");
         sciences.initLexique("./sciences-lexique-automatique.txt");
         politique.initLexique("./politique-lexique-automatique.txt");
         culture.initLexique("./culture-lexique-automatique.txt");
-        listCategorie.add(sport);
-        listCategorie.add(economie);
-        listCategorie.add(sciences);
-        listCategorie.add(politique);
-        listCategorie.add(culture);
-        classementDepeches(depeches,listCategorie,"fichier-reponse-automatique");
+//        listCategorie.add(sport);
+//        listCategorie.add(economie);
+//        listCategorie.add(sciences);
+//        listCategorie.add(politique);
+//        listCategorie.add(culture);
+        classementDepeches(test,listCategorie,"fichier-reponse-automatique");
 
         long endtime = System.currentTimeMillis();
         System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
 
 
 
+
+            ArrayList<Categorie> categorieKnn = new ArrayList<>();
+            for (int i = 0; i < depeches.size(); i++) {
+                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+                categorieKnn.add(cateCouranteKnn);
+            }
+
+            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
+
+        }
+
+
+
     }
 
 
-}
+
 
