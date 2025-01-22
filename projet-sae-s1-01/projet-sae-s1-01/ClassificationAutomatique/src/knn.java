@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,24 +81,9 @@ public class knn {
         return nbrMotsCommuns;
     }
 
-    public static int motsCommunsLexique(Depeche d1, ArrayList<String> lexique) {
-        ArrayList<String> motD1 = retirerMotsVides(d1.getMots());
-        ArrayList<String> motLexique = retirerMotsVides(lexique);
 
-        // Compter les mots communs
-        int nbrMotsCommuns = 0;
-        for (String unMotD1 : motD1) {
-            for (String unMotLexique : motLexique) {
-                if (unMotD1.equals(unMotLexique)) {
-                    nbrMotsCommuns++;
-                    break; // Éviter de compter plusieurs fois le même mot
-                }
-            }
-        }
-        return nbrMotsCommuns;
-    }
 
-    public static ArrayList<Depeche> triDepeche(ArrayList<Depeche> depeches) {
+    public static ArrayList<Depeche> triDepecheKnn(ArrayList<Depeche> depeches) {
         //on trouve le plus proche et on le met à coté de la depeche courante
         if (!depeches.isEmpty()) {
             int i = 0;
@@ -121,6 +107,66 @@ public class knn {
             }
         }
         return depeches;
+    }
+
+    //il faut mettre les categories du fichier fait avec knn et aussi  quelque differentes categories (science, politique etc)
+    public static void classementResultat(ArrayList<Depeche> depeches, ArrayList<Categorie> categoriesKnn,ArrayList<Categorie> categories, String nomFichier) {
+        try {
+            FileWriter file = new FileWriter(nomFichier + ".txt");
+            ArrayList<PaireChaineEntier> listePourLaMoyenne = new ArrayList<>();
+
+
+            //étape 1
+            knn.triDepecheKnn(depeches);
+            for (int i = 0; i < depeches.size(); i++) {
+                String iFormate = String.valueOf(1000+i).substring(1);
+                file.write(iFormate+":"+depeches.get(i).getCategorie()+"\n");
+                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+            }
+
+
+            //étape 2
+            int i = 0;
+            while (i < categories.size()) {
+                Categorie categorie = categories.get(i);
+                String categorieNom = categorie.getNom();
+
+                int totalDansCategorie = 0; // Nombre de dépêches qui appartiennent à cette catégorie
+                int correctementClassees = 0; // Nombre de dépêches correctement classées
+
+                int j = 0;
+                while (j < depeches.size()) {
+                    Depeche depeche = depeches.get(j);
+                    String categorieReelle = depeche.getCategorie();
+                    String categorieClassee = categoriesKnn.get(j).getNom();
+
+                    if (categorieReelle.equalsIgnoreCase(categorieNom)) {
+                        totalDansCategorie++;
+                        if (categorieReelle.equalsIgnoreCase(categorieClassee)) {
+                            correctementClassees++;
+                        }
+                    }
+                    j++;
+                }
+
+
+                if (totalDansCategorie > 0) {
+                    double tauxPrecision = (double) correctementClassees / totalDansCategorie * 100;
+                    int tauxEnInt = (int) tauxPrecision;
+                    file.write(categorieNom.toUpperCase() + ":" + tauxPrecision + "%\n");
+                    listePourLaMoyenne.add(new PaireChaineEntier(categorieNom, tauxEnInt));
+                } else {
+                    System.out.println("Catégorie " + categorieNom + ": Aucune dépêche trouvée.");
+                }
+
+                i++;
+            }
+            file.write("MOYENNE:" + UtilitairePaireChaineEntier.moyenne(listePourLaMoyenne) + "%\n");
+            System.out.println("Votre saisie a été écrite avec succès dans " + nomFichier + ".txt");
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
     //renvoie une arraylist qui contient les k voisins de la depeche demandé

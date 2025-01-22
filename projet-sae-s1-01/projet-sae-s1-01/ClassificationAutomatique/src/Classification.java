@@ -41,7 +41,7 @@ public class Classification {
         return depeches;
     }
 
-
+    //cette fonction permet de creer les fichiers reponses et de calculer le pourcentage
     public static void classementDepeches(ArrayList<Depeche> depeches, ArrayList<Categorie> categories, String nomFichier) {
         try {
             FileWriter file = new FileWriter(nomFichier + ".txt");
@@ -375,10 +375,17 @@ public class Classification {
         long endtime = System.currentTimeMillis();
         System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
 
-        knn.triDepeche(depeches);
-        for (int i = 0; i < depeches.size(); i++) {
-            System.out.println(i+":"+depeches.get(i).getCategorie());
-            //ecrire dans un fichier à la place de sout
+
+
+
+            ArrayList<Categorie> categorieKnn = new ArrayList<>();
+            for (int i = 0; i < depeches.size(); i++) {
+                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+                categorieKnn.add(cateCouranteKnn);
+            }
+
+            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
+
         }
 
 
@@ -386,5 +393,5 @@ public class Classification {
     }
 
 
-}
+
 
