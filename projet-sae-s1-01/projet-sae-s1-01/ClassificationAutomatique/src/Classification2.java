@@ -321,9 +321,7 @@ public class Classification2 {
             categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
         }
         classementDepeches(depeches, categories, "./fichier-reponses2");
-
-
-
+        
 
 
 
