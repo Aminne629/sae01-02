@@ -305,54 +305,30 @@ public class Classification2 {
 
 
 
-<<<<<<< Updated upstream
-
 
     public static void main(String[] args) {
         //on extrait les categories et classe les depeches;
         System.out.println("Chargement des depeches");
         ArrayList<Depeche> depeches = lectureDepeches("./test2.txt"); //creation fichier depeches
         ArrayList<Categorie> categories = decouvrirCategories(depeches); //creation des categories
-=======
-    public static void main(String[] args) {
-        //on extrait les categories et classe les depeches
-        ArrayList<Depeche> depeches = lectureDepeches("test2.txt");
-        ArrayList<Categorie> categories = decouvrirCategories(depeches);
-
-        classementDepeches(depeches, categories, "test2.txt");
->>>>>>> Stashed changes
-
-        ArrayList<Depeche> anciennedepeches = lectureDepeches("./test.txt");
-        ArrayList<Categorie> anciennecategories = decouvrirCategories(anciennedepeches); //on rajoute les anciennes classes
-
 
 
         System.out.println("Initialisation des lexiques");
         for (Categorie categorie : categories) {
-<<<<<<< Updated upstream
             generationLexique(depeches,categorie.getNom(),"./"+categorie.getNom().toLowerCase()+"-lexique2-automatique");
         }
-
-
         for (int i =0; i < categories.size(); i++) {
             categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
         }
-
-        classementDepeches(depeches,categories,"fichier-reponses2");
-
+        classementDepeches(depeches, categories, "./fichier-reponses2");
 
 
 
 
 
-=======
-            System.out.println(categorie.getNom());
-//            categorie.initLexique(categorie.getNom()+"-lexique2-automatique.txt");
+
+
         }
-
-
->>>>>>> Stashed changes
-    }
 
 
 
