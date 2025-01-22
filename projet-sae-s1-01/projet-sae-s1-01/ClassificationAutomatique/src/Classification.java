@@ -290,7 +290,9 @@ public class Classification {
         long starttime = System.currentTimeMillis();
         //Chargement des dépêches en mémoire
         System.out.println("chargement des dépêches");
-        ArrayList<Depeche> depeches = lectureDepeches("./test.txt");
+        ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
+        ArrayList<Depeche> test = lectureDepeches("./test.txt");
+
 
 //        for (int i = 0; i < depeches.size(); i++) {
 //            depeches.get(i).afficher();
@@ -359,18 +361,18 @@ public class Classification {
         }
         System.out.println("Création automatique des lexiques terminée.");
 
-        listCategorie.clear();
+//        listCategorie.clear();
         sport.initLexique("./sport-lexique-automatique.txt");
         economie.initLexique("./economie-lexique-automatique.txt");
         sciences.initLexique("./sciences-lexique-automatique.txt");
         politique.initLexique("./politique-lexique-automatique.txt");
         culture.initLexique("./culture-lexique-automatique.txt");
-        listCategorie.add(sport);
-        listCategorie.add(economie);
-        listCategorie.add(sciences);
-        listCategorie.add(politique);
-        listCategorie.add(culture);
-        classementDepeches(depeches,listCategorie,"fichier-reponse-automatique");
+//        listCategorie.add(sport);
+//        listCategorie.add(economie);
+//        listCategorie.add(sciences);
+//        listCategorie.add(politique);
+//        listCategorie.add(culture);
+        classementDepeches(test,listCategorie,"fichier-reponse-automatique");
 
         long endtime = System.currentTimeMillis();
         System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
