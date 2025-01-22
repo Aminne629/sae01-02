@@ -191,7 +191,7 @@ public class Classification {
     //renvoie l'indice du mot ou alors l'indice ou il faut l'insérer grace à une technique d'inversion à l'indice 0
     // et renvoie le nb de comparaisons à l'indice 1
     private static ArrayList<Integer> rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
-        int nbComparaisons=1;
+        int nbComparaisons=1; //au cas ou on ne rentre pas dans la boucle
         int inf = 0;
         int sup = liste.size() - 1;
         ArrayList<Integer> resultat = new ArrayList<>();
