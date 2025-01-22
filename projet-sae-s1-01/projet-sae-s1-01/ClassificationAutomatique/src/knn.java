@@ -1,9 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class knn {
     private static ArrayList<Depeche> lectureDepeches(String nomFichier) {
@@ -184,5 +182,218 @@ public class knn {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int motsCommunsLexique(Depeche d1, ArrayList<String> lexique) {
+        // Extraire uniquement les mots avant les ":" dans le lexique
+        ArrayList<String> motsLexique = new ArrayList<>();
+        for (String entry : lexique) {
+            String[] parts = entry.split(":");
+            if (parts.length > 0) {
+                motsLexique.add(parts[0].trim());
+            }
+        }
+
+        // Compter les mots communs
+        int nbrMotsCommuns = 0;
+        for (String unMotD1 : retirerMotsVides(d1.getMots())) {
+            for (String motLexique : motsLexique) {
+                if (unMotD1.equals(motLexique)) {
+                    nbrMotsCommuns++;
+                    break; // Éviter de compter plusieurs fois le même mot
+                }
+            }
+        }
+
+        return nbrMotsCommuns;
+    }
+
+
+
+
+    // Renvoie une ArrayList qui contient les k voisins de la dépêche demandée
+    public static ArrayList<Depeche> voisinsK(ArrayList<Depeche> depeches, Depeche depecheCour, int k) {
+        // Trouver l'indice de la dépêche courante
+        int indiceDepecheCour = -1;
+        for (int i = 0; i < depeches.size(); i++) {
+            if (depeches.get(i).equals(depecheCour)) {
+                indiceDepecheCour = i;
+                break;
+            }
+        }
+
+        // Si la dépêche n'a pas été trouvée, retourner une liste vide
+        if (indiceDepecheCour == -1) {
+            return new ArrayList<>();
+        }
+
+        // Créer une liste pour les voisins
+        ArrayList<Depeche> voisinsK = new ArrayList<>();
+
+        // Ajouter les k voisins suivants si disponibles
+        for (int j = 1; j <= k; j++) {
+            int indiceVoisin = indiceDepecheCour + j;
+            if (indiceVoisin < depeches.size()) {
+                voisinsK.add(depeches.get(indiceVoisin));
+            } else {
+                break; // Sortir si on dépasse la taille de la liste
+            }
+        }
+
+        return voisinsK;
+    }
+
+    public static String categorieLaPlusPresente(ArrayList<Categorie> categories) {
+        // Liste pour stocker les noms de catégories déjà rencontrés
+        ArrayList<String> nomsCategories = new ArrayList<>();
+        ArrayList<Integer> frequences = new ArrayList<>();
+
+        // Comptage des fréquences
+        for (Categorie categorie : categories) {
+            String nomCategorie = categorie.getNom();
+
+            if (nomsCategories.contains(nomCategorie)) {
+                int index = nomsCategories.indexOf(nomCategorie);
+                frequences.set(index, frequences.get(index) + 1);
+            } else {
+                nomsCategories.add(nomCategorie);
+                frequences.add(1);
+            }
+        }
+
+        // Recherche de la catégorie la plus fréquente
+        int maxFrequence = 0;
+        String categoriePlusFrequent = "";
+
+        for (int i = 0; i < frequences.size(); i++) {
+            if (frequences.get(i) > maxFrequence) {
+                maxFrequence = frequences.get(i);
+                categoriePlusFrequent = nomsCategories.get(i);
+            }
+        }
+        return categoriePlusFrequent;
+    }
+
+
+
+    //il faut utiliser la fonction voisinK pour trouver les k voisins de la depecheCour
+    //on va determiner la categorie de chaque voisin k grace au lexique et grace à ça on determine la categorie de la depeche courante en prenant là categorie majoritaire.
+        public static Categorie categorieDepeche(Depeche depecheCour,ArrayList<Depeche> voisinK,ArrayList<Categorie> vCategories){
+
+            ArrayList<Categorie> Categories = new ArrayList<>();
+
+            ArrayList<Depeche> depechesEconomie = lectureDepeches("./economie-lexique-automatique.txt");
+            ArrayList<String> motsEconomie = new ArrayList<>();
+            ArrayList<Depeche> depechesSport = lectureDepeches("./sport-lexique-automatique.txt");
+            ArrayList<String> motsSport = new ArrayList<>();
+            ArrayList<Depeche> depechesPolitique = lectureDepeches("./politique-lexique-automatique.txt");
+            ArrayList<String> motsPolitique = new ArrayList<>();
+            ArrayList<Depeche> depechesSciences = lectureDepeches("./sciences-lexique-automatique.txt");
+            ArrayList<String> motsSciences = new ArrayList<>();
+            ArrayList<Depeche> depechesCulture = lectureDepeches("./culture-lexique-automatique.txt");
+            ArrayList<String> motsCulture = new ArrayList<>();
+
+            for (Depeche depeche: depechesEconomie){
+                motsEconomie = (depeche.getMots());
+            }
+
+            for (Depeche depeche: depechesSport){
+                motsSport = (depeche.getMots());
+            }
+
+            for (Depeche depeche: depechesPolitique){
+                motsPolitique = (depeche.getMots());
+            }
+
+            for (Depeche depeche: depechesSciences){
+                motsSciences = (depeche.getMots());
+            }
+
+            for (Depeche depeche: depechesCulture){
+                motsCulture = (depeche.getMots());
+            }
+
+            for (Depeche depecheVoisinK: voisinK){
+                int nbMotsCommuns = 0;
+                Categorie categorieDuVoisinK = new Categorie("problème");
+
+                int nbMotsCommunsTest = motsCommunsLexique(depecheVoisinK,motsEconomie);
+                if (nbMotsCommunsTest>nbMotsCommuns){
+                    nbMotsCommuns = nbMotsCommunsTest;
+                    categorieDuVoisinK = new Categorie("economie");
+                }
+                nbMotsCommunsTest = motsCommunsLexique(depecheVoisinK,motsSport);
+                if (nbMotsCommunsTest>nbMotsCommuns){
+                    nbMotsCommuns = nbMotsCommunsTest;
+                    categorieDuVoisinK = new Categorie("sport");
+                }
+
+                nbMotsCommunsTest = motsCommunsLexique(depecheVoisinK,motsPolitique);
+                if (nbMotsCommunsTest>nbMotsCommuns){
+                    nbMotsCommuns = nbMotsCommunsTest;
+                    categorieDuVoisinK = new Categorie("politique");
+                }
+
+                nbMotsCommunsTest = motsCommunsLexique(depecheVoisinK,motsSciences);
+                if (nbMotsCommunsTest>nbMotsCommuns){
+                    nbMotsCommuns = nbMotsCommunsTest;
+                    categorieDuVoisinK = new Categorie("sciences");
+                }
+
+                nbMotsCommunsTest = motsCommunsLexique(depecheVoisinK,motsCulture);
+                if (nbMotsCommunsTest>nbMotsCommuns){
+                    nbMotsCommuns = nbMotsCommunsTest;
+                    categorieDuVoisinK = new Categorie("culture");
+                }
+
+                Categories.add(categorieDuVoisinK);
+
+            }
+//            int nbScience = 0;
+//            int nbCulture = 0;
+//            int nbPolitique = 0;
+//            int nbEconomie = 0;
+//            int nbSport = 0;
+//
+//            for (Categorie categorie: Categories){
+//                if (categorie.getNom().equals("economie")){
+//                    nbEconomie++;
+//                }
+//                if (categorie.getNom().equals("politique")){
+//                    nbPolitique++;
+//                }
+//                if (categorie.getNom().equals("sciences")){
+//                    nbScience++;
+//                }
+//                if (categorie.getNom().equals("culture")){
+//                    nbCulture++;
+//                }
+//                if (categorie.getNom().equals("sport")){
+//                    nbSport++;
+//                }
+//            }
+//            PaireChaineEntier scienceP = new PaireChaineEntier("science",nbScience);
+//            PaireChaineEntier cultureP = new PaireChaineEntier("culture",nbCulture);
+//            PaireChaineEntier politiqueP = new PaireChaineEntier("politique",nbPolitique);
+//            PaireChaineEntier economieP = new PaireChaineEntier("economie",nbEconomie);
+//            PaireChaineEntier sportP = new PaireChaineEntier("sport",nbSport);
+//
+//            ArrayList<PaireChaineEntier> vCategorieEtScore = new ArrayList<>(Arrays.asList(scienceP,cultureP,politiqueP,economieP,sportP));
+//
+            String categorie = categorieLaPlusPresente(Categories);
+//            int score = 0;
+//            PaireChaineEntier resultatP = new PaireChaineEntier("resultat",score);
+//            for (PaireChaineEntier Categorie: vCategorieEtScore){
+//                if (score<Categorie.getEntier()){
+//                    score = Categorie.getEntier();
+//                    resultatP = Categorie;
+//                }
+//            }
+//        Categorie resultatC = new Categorie(resultatP.getChaine());
+            Categorie resultatC = new Categorie(categorie);
+
+
+            return resultatC;
+
     }
 }
