@@ -309,7 +309,7 @@ public class Classification2 {
     public static void main(String[] args) {
         //on extrait les categories et classe les depeches;
         System.out.println("Chargement des depeches");
-        ArrayList<Depeche> depeches = lectureDepeches("./test2.txt"); //creation fichier depeches
+        ArrayList<Depeche> depeches = lectureDepeches("./depeches2.txt"); //creation fichier depeches
         ArrayList<Categorie> categories = decouvrirCategories(depeches); //creation des categories
 
 
@@ -320,10 +320,8 @@ public class Classification2 {
         for (int i =0; i < categories.size(); i++) {
             categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
         }
-        classementDepeches(depeches, categories, "./fichier-reponses2");
-
-
-
+        classementDepeches(lectureDepeches("./test2.txt"), categories, "./fichier-reponses2");
+        
 
 
 
