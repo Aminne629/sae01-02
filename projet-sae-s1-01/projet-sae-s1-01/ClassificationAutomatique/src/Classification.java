@@ -147,7 +147,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
-//            System.out.println(nbComparaisons);
+            System.out.println(nbComparaisons);
             return resultat;
         }
 
@@ -182,7 +182,7 @@ public class Classification {
                 }
             }
         }
-//        System.out.println(nbComparaisons);
+        System.out.println(nbComparaisons);
         // Retourner la liste contenant les paires (mot, score)
         return resultat;
     }
@@ -284,7 +284,7 @@ public class Classification {
                 file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
             }
-//            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
+            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -299,15 +299,8 @@ public class Classification {
         ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
         ArrayList<Depeche> test = lectureDepeches("./test.txt");
 
-
-//        for (int i = 0; i < depeches.size(); i++) {
-//            depeches.get(i).afficher();
-//        }
-
-
-
+        //initialisation des lexiques manuelles
         System.out.println("Initialisation des lexiques");
-
 
         Categorie sport = new Categorie("sport");
         sport.initLexique("./sport.txt");
@@ -319,24 +312,10 @@ public class Classification {
         politique.initLexique("./politique.txt");
         Categorie culture = new Categorie("culture");
         culture.initLexique("./culture.txt");
-//        System.out.println(economie.getLexique());
 
+        Scanner lecteur = new Scanner(System.in);
 
-//        for(int i=0; i<sport.getLexique().size();i++){
-//            System.out.print(sport.getLexique().get(i).getChaine() + ":");
-//            System.out.println(sport.getLexique().get(i).getEntier());
-//        }
-
-           Scanner lecteur = new Scanner(System.in);
-//        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
-//        String mot = lecteur.nextLine();
-//        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
-
-//
-//        System.out.println(sport.score(depeches.get(402)));
-//        System.out.println(economie.score(depeches.get(204)));
-
-
+        //ArrayList de categorie
         ArrayList<Categorie> listCategorie = new ArrayList<>();
         listCategorie.add(sport);
         listCategorie.add(economie);
@@ -344,71 +323,39 @@ public class Classification {
         listCategorie.add(politique);
         listCategorie.add(culture);
 
-//        System.out.print("Donnez un  numéro de depeche: ");
-//        int numDepeche = lecteur.nextInt();lecteur.nextLine();
-//        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
-//        for (int i = 0; i < listCategorie.size(); i++) {
-//
-//            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
-//            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
-//            listeScore.add(aAjouter);
-//
-//        }
-
-//        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
-
-
+        //classement avec lexiques manuels
         classementDepeches(depeches,listCategorie,"fichier-reponse");
 
-
-
+        //generation des lexiques automatiques
         for (Categorie categorie : listCategorie) {
             generationLexique(depeches,categorie.getNom(),categorie.getNom()+"-lexique-automatique");
         }
         System.out.println("Création automatique des lexiques terminée.");
 
-//        listCategorie.clear();
+        //initialisation des lexiques automatiques
         sport.initLexique("./sport-lexique-automatique.txt");
         economie.initLexique("./economie-lexique-automatique.txt");
         sciences.initLexique("./sciences-lexique-automatique.txt");
         politique.initLexique("./politique-lexique-automatique.txt");
         culture.initLexique("./culture-lexique-automatique.txt");
-//        listCategorie.add(sport);
-//        listCategorie.add(economie);
-//        listCategorie.add(sciences);
-//        listCategorie.add(politique);
-//        listCategorie.add(culture);
+
+        //classement avec lexique automatique
         classementDepeches(test,listCategorie,"fichier-reponse-automatique");
 
         long endtime = System.currentTimeMillis();
-//        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
 
 
 
-
-            ArrayList<Categorie> categorieKnn = new ArrayList<>();
-//            for (int i = 0; i < depeches.size(); i++) {
-//                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
-//                categorieKnn.add(cateCouranteKnn);
-//            }
-
-//            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
-
-        System.out.print("On va tester le méthode KNN, pour cela entrez un nombre eniter K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
-        int k = lecteur.nextInt();lecteur.nextLine();
-//            knn.triDepecheKnn(depeches);
-            for (Depeche depechett : depeches){
-                    ArrayList<Depeche> voisin;
-                    voisin = knn.voisinsK(depeches,depechett,k);
-                    Categorie categ = knn.categorieDepeche(depeches.get(k),voisin,listCategorie);
-                    categorieKnn.add(categ);
-                }
+        //knn
+        ArrayList<Categorie> categorieKnn = new ArrayList<>();
+        for (int i = 0; i < depeches.size(); i++) {
+            Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+            categorieKnn.add(cateCouranteKnn);
+        }
         knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
-
-    }
-
-
-    }
+        }
+}
 
 
 
