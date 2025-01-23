@@ -394,7 +394,7 @@ public class Classification {
 
 //            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
 
-        System.out.print("On va tester le méthode KNN, pour cela entrez un nombre eniter K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
+        System.out.print("On va tester la méthode KNN, pour cela entrez un nombre entier K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
         int k = lecteur.nextInt();lecteur.nextLine();
 //            knn.triDepecheKnn(depeches);
             for (Depeche depechett : depeches){
