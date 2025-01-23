@@ -320,7 +320,7 @@ public class Classification2 {
         for (int i =0; i < categories.size(); i++) {
             categories.get(i).initLexique("./"+categories.get(i).getNom().toLowerCase()+"-lexique2-automatique.txt"); // initialisation des lexiques
         }
-        classementDepeches(depeches, categories, "./fichier-reponses2");
+        classementDepeches(lectureDepeches("./test2.txt"), categories, "./fichier-reponses2");
         
 
 
