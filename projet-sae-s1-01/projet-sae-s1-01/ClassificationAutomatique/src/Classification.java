@@ -147,7 +147,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
-            System.out.println(nbComparaisons);
+//            System.out.println(nbComparaisons);
             return resultat;
         }
 
@@ -182,7 +182,7 @@ public class Classification {
                 }
             }
         }
-        System.out.println(nbComparaisons);
+//        System.out.println(nbComparaisons);
         // Retourner la liste contenant les paires (mot, score)
         return resultat;
     }
@@ -284,7 +284,7 @@ public class Classification {
                 file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
             }
-            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
+//            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -381,21 +381,31 @@ public class Classification {
         classementDepeches(test,listCategorie,"fichier-reponse-automatique");
 
         long endtime = System.currentTimeMillis();
-        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+//        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
 
 
 
 
             ArrayList<Categorie> categorieKnn = new ArrayList<>();
-            for (int i = 0; i < depeches.size(); i++) {
-                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
-                categorieKnn.add(cateCouranteKnn);
-            }
+//            for (int i = 0; i < depeches.size(); i++) {
+//                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+//                categorieKnn.add(cateCouranteKnn);
+//            }
 
-            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
+//            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
 
-        }
+        System.out.print("On va tester le méthode KNN, pour cela entrez un nombre eniter K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
+        int k = lecteur.nextInt();lecteur.nextLine();
+//            knn.triDepecheKnn(depeches);
+            for (Depeche depechett : depeches){
+                    ArrayList<Depeche> voisin;
+                    voisin = knn.voisinsK(depeches,depechett,k);
+                    Categorie categ = knn.categorieDepeche(depeches.get(k),voisin,listCategorie);
+                    categorieKnn.add(categ);
+                }
+        knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
 
+    }
 
 
     }
