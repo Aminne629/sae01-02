@@ -3,7 +3,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
+
 
 public class Classification {
 
@@ -222,44 +225,50 @@ public class Classification {
 
 
     // La méthode calculScores met à jour les scores des mots dans dictionnaire
+
+
     public static int calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
-        int nbCompairaisons = 1;
+        int nbComparaisons = 1;
         categorie = categorie.toUpperCase();
+
+        // Assurez-vous que le dictionnaire est trié (par exemple, par ordre alphabétique des chaînes)
+        dictionnaire.sort(Comparator.comparing(PaireChaineEntier::getChaine));
+
         // Parcours de toutes les dépêches
-        for (int i = 0; i < depeches.size(); i++) {
-            Depeche depecheCourante = depeches.get(i);
-            nbCompairaisons++;
-            // Vérification si la dépêche appartient à la catégorie demandée
+        for (Depeche depecheCourante : depeches) {
+            nbComparaisons++;
             boolean estDansLaCategorie = depecheCourante.getCategorie().equals(categorie);
 
             // Récupération des mots de la dépêche
-            ArrayList<String> mots = depecheCourante.getMots();  // Cette méthode doit retourner une ArrayList<String>
+            ArrayList<String> mots = depecheCourante.getMots();
 
             // Parcours des mots de la dépêche
-            for (int j = 0; j < mots.size(); j++) {
-                nbCompairaisons++;
-                String motDeLaDepeche = mots.get(j);
-                boolean present = false;
-                // Parcours du dictionnaire pour trouver la PaireChaineEntier associée au mot
-                for (int k = 0; k < dictionnaire.size() && !present; k++) {
-                    nbCompairaisons++;
-                    PaireChaineEntier paire = dictionnaire.get(k);
-                    if (paire.getChaine().equals(motDeLaDepeche)) {
-                        nbCompairaisons++;
-                        // Si la dépêche appartient à la catégorie, incrémenter le score
-                        if (estDansLaCategorie) {
-                            paire.setEntier(paire.getEntier() + 1);  // Incrémentation
-                        } else {
-                            paire.setEntier(paire.getEntier() - 1);  // Décrémentation
-                        }
-                        present = true;
+            for (String motDeLaDepeche : mots) {
+                nbComparaisons++;
+
+                // Recherche dichotomique pour trouver le mot dans le dictionnaire
+                int index = Collections.binarySearch(dictionnaire,
+                        new PaireChaineEntier(motDeLaDepeche, 0),
+                        Comparator.comparing(PaireChaineEntier::getChaine));
+
+                if (index >= 0) { // Mot trouvé
+                    nbComparaisons++;
+                    PaireChaineEntier paire = dictionnaire.get(index);
+
+                    // Mise à jour du score
+                    if (estDansLaCategorie) {
+                        paire.setEntier(paire.getEntier() + 1);  // Incrémentation
+                    } else {
+                        paire.setEntier(paire.getEntier() - 1);  // Décrémentation
                     }
                 }
             }
         }
 
-        return nbCompairaisons;
+
+        return nbComparaisons;
     }
+
 
     public static int poidsPourScore(int score) {
         if (score <=-2) {
@@ -284,7 +293,7 @@ public class Classification {
                 file.write(mot + ":" + poidsPourScore(paire.getEntier()) + "\n");
 
             }
-//            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
+            System.out.println("Pour la fonction calculScores il y a eu "+nbComparaisons+" comparaisons.");
         } catch(IOException e){
             e.printStackTrace();
         }
