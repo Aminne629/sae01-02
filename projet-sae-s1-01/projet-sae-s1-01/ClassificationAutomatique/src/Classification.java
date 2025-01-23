@@ -3,7 +3,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
+
 
 public class Classification {
 
@@ -147,7 +150,7 @@ public class Classification {
                 }
             }
             // Retourner la liste contenant les paires (mot, score)
-            System.out.println(nbComparaisons);
+//            System.out.println(nbComparaisons);
             return resultat;
         }
 
@@ -182,7 +185,7 @@ public class Classification {
                 }
             }
         }
-        System.out.println(nbComparaisons);
+//        System.out.println(nbComparaisons);
         // Retourner la liste contenant les paires (mot, score)
         return resultat;
     }
@@ -191,7 +194,7 @@ public class Classification {
     //renvoie l'indice du mot ou alors l'indice ou il faut l'insérer grace à une technique d'inversion à l'indice 0
     // et renvoie le nb de comparaisons à l'indice 1
     private static ArrayList<Integer> rechercheDichotomique(ArrayList<PaireChaineEntier> liste, String mot) {
-        int nbComparaisons=1; //au cas ou on ne rentre pas dans la boucle
+        int nbComparaisons=1;
         int inf = 0;
         int sup = liste.size() - 1;
         ArrayList<Integer> resultat = new ArrayList<>();
@@ -222,44 +225,50 @@ public class Classification {
 
 
     // La méthode calculScores met à jour les scores des mots dans dictionnaire
+
+
     public static int calculScores(ArrayList<Depeche> depeches, String categorie, ArrayList<PaireChaineEntier> dictionnaire) {
-        int nbCompairaisons = 1;
+        int nbComparaisons = 1;
         categorie = categorie.toUpperCase();
+
+        // Assurez-vous que le dictionnaire est trié (par exemple, par ordre alphabétique des chaînes)
+        dictionnaire.sort(Comparator.comparing(PaireChaineEntier::getChaine));
+
         // Parcours de toutes les dépêches
-        for (int i = 0; i < depeches.size(); i++) {
-            Depeche depecheCourante = depeches.get(i);
-            nbCompairaisons++;
-            // Vérification si la dépêche appartient à la catégorie demandée
+        for (Depeche depecheCourante : depeches) {
+            nbComparaisons++;
             boolean estDansLaCategorie = depecheCourante.getCategorie().equals(categorie);
 
             // Récupération des mots de la dépêche
-            ArrayList<String> mots = depecheCourante.getMots();  // Cette méthode doit retourner une ArrayList<String>
+            ArrayList<String> mots = depecheCourante.getMots();
 
             // Parcours des mots de la dépêche
-            for (int j = 0; j < mots.size(); j++) {
-                nbCompairaisons++;
-                String motDeLaDepeche = mots.get(j);
-                boolean present = false;
-                // Parcours du dictionnaire pour trouver la PaireChaineEntier associée au mot
-                for (int k = 0; k < dictionnaire.size() && !present; k++) {
-                    nbCompairaisons++;
-                    PaireChaineEntier paire = dictionnaire.get(k);
-                    if (paire.getChaine().equals(motDeLaDepeche)) {
-                        nbCompairaisons++;
-                        // Si la dépêche appartient à la catégorie, incrémenter le score
-                        if (estDansLaCategorie) {
-                            paire.setEntier(paire.getEntier() + 1);  // Incrémentation
-                        } else {
-                            paire.setEntier(paire.getEntier() - 1);  // Décrémentation
-                        }
-                        present = true;
+            for (String motDeLaDepeche : mots) {
+                nbComparaisons++;
+
+                // Recherche dichotomique pour trouver le mot dans le dictionnaire
+                int index = Collections.binarySearch(dictionnaire,
+                        new PaireChaineEntier(motDeLaDepeche, 0),
+                        Comparator.comparing(PaireChaineEntier::getChaine));
+
+                if (index >= 0) { // Mot trouvé
+                    nbComparaisons++;
+                    PaireChaineEntier paire = dictionnaire.get(index);
+
+                    // Mise à jour du score
+                    if (estDansLaCategorie) {
+                        paire.setEntier(paire.getEntier() + 1);  // Incrémentation
+                    } else {
+                        paire.setEntier(paire.getEntier() - 1);  // Décrémentation
                     }
                 }
             }
         }
 
-        return nbCompairaisons;
+
+        return nbComparaisons;
     }
+
 
     public static int poidsPourScore(int score) {
         if (score <=-2) {
@@ -299,8 +308,15 @@ public class Classification {
         ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
         ArrayList<Depeche> test = lectureDepeches("./test.txt");
 
-        //initialisation des lexiques manuelles
+
+//        for (int i = 0; i < depeches.size(); i++) {
+//            depeches.get(i).afficher();
+//        }
+
+
+
         System.out.println("Initialisation des lexiques");
+
 
         Categorie sport = new Categorie("sport");
         sport.initLexique("./sport.txt");
@@ -312,10 +328,24 @@ public class Classification {
         politique.initLexique("./politique.txt");
         Categorie culture = new Categorie("culture");
         culture.initLexique("./culture.txt");
+//        System.out.println(economie.getLexique());
 
-        Scanner lecteur = new Scanner(System.in);
 
-        //ArrayList de categorie
+//        for(int i=0; i<sport.getLexique().size();i++){
+//            System.out.print(sport.getLexique().get(i).getChaine() + ":");
+//            System.out.println(sport.getLexique().get(i).getEntier());
+//        }
+
+           Scanner lecteur = new Scanner(System.in);
+//        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
+//        String mot = lecteur.nextLine();
+//        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
+
+//
+//        System.out.println(sport.score(depeches.get(402)));
+//        System.out.println(economie.score(depeches.get(204)));
+
+
         ArrayList<Categorie> listCategorie = new ArrayList<>();
         listCategorie.add(sport);
         listCategorie.add(economie);
@@ -323,39 +353,71 @@ public class Classification {
         listCategorie.add(politique);
         listCategorie.add(culture);
 
-        //classement avec lexiques manuels
+//        System.out.print("Donnez un  numéro de depeche: ");
+//        int numDepeche = lecteur.nextInt();lecteur.nextLine();
+//        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
+//        for (int i = 0; i < listCategorie.size(); i++) {
+//
+//            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
+//            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
+//            listeScore.add(aAjouter);
+//
+//        }
+
+//        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
+
+
         classementDepeches(depeches,listCategorie,"fichier-reponse");
 
-        //generation des lexiques automatiques
+
+
         for (Categorie categorie : listCategorie) {
             generationLexique(depeches,categorie.getNom(),categorie.getNom()+"-lexique-automatique");
         }
         System.out.println("Création automatique des lexiques terminée.");
 
-        //initialisation des lexiques automatiques
+//        listCategorie.clear();
         sport.initLexique("./sport-lexique-automatique.txt");
         economie.initLexique("./economie-lexique-automatique.txt");
         sciences.initLexique("./sciences-lexique-automatique.txt");
         politique.initLexique("./politique-lexique-automatique.txt");
         culture.initLexique("./culture-lexique-automatique.txt");
-
-        //classement avec lexique automatique
+//        listCategorie.add(sport);
+//        listCategorie.add(economie);
+//        listCategorie.add(sciences);
+//        listCategorie.add(politique);
+//        listCategorie.add(culture);
         classementDepeches(test,listCategorie,"fichier-reponse-automatique");
 
         long endtime = System.currentTimeMillis();
-        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+//        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
 
 
 
-        //knn
-        ArrayList<Categorie> categorieKnn = new ArrayList<>();
-        for (int i = 0; i < depeches.size(); i++) {
-            Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
-            categorieKnn.add(cateCouranteKnn);
-        }
+
+            ArrayList<Categorie> categorieKnn = new ArrayList<>();
+//            for (int i = 0; i < depeches.size(); i++) {
+//                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
+//                categorieKnn.add(cateCouranteKnn);
+//            }
+
+//            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
+
+        System.out.print("On va tester la méthode KNN, pour cela entrez un nombre entier K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
+        int k = lecteur.nextInt();lecteur.nextLine();
+//            knn.triDepecheKnn(depeches);
+            for (Depeche depechett : depeches){
+                    ArrayList<Depeche> voisin;
+                    voisin = knn.voisinsK(depeches,depechett,k);
+                    Categorie categ = knn.categorieDepeche(depeches.get(k),voisin,listCategorie);
+                    categorieKnn.add(categ);
+                }
         knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
-        }
-}
+
+    }
+
+
+    }
 
 
 
