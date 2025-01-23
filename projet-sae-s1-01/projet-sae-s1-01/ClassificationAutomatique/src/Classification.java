@@ -97,6 +97,7 @@ public class Classification {
                     double tauxPrecision = (double) correctementClassees / totalDansCategorie * 100;
                     int tauxEnInt = (int) tauxPrecision;
                     file.write(categorieNom.toUpperCase() + ":" + tauxPrecision + "%\n");
+                    System.out.println(categorieNom.toUpperCase() + ":" + tauxPrecision+"%");
                     listePourLaMoyenne.add(new PaireChaineEntier(categorieNom, tauxEnInt));
                 } else {
                     System.out.println("Catégorie " + categorieNom + ": Aucune dépêche trouvée.");
@@ -105,7 +106,8 @@ public class Classification {
                 i++;
             }
             file.write("MOYENNE:"+UtilitairePaireChaineEntier.moyenne(listePourLaMoyenne) + "%\n");
-            System.out.println("Votre saisie a été écrite avec succès dans " + nomFichier + ".txt");
+            System.out.println("MOYENNE:"+UtilitairePaireChaineEntier.moyenne(listePourLaMoyenne)+"%");
+//            System.out.println("Votre saisie a été écrite avec succès dans " + nomFichier + ".txt");
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -302,22 +304,17 @@ public class Classification {
 
 
     public static void main(String[] args) {
-        long starttime = System.currentTimeMillis();
-        //Chargement des dépêches en mémoire
-        System.out.println("chargement des dépêches");
+        long globalStartTime = System.currentTimeMillis();
+        System.out.println("Début du programme...");
+
+        // Chargement des dépêches
+        long startTime = System.currentTimeMillis();
         ArrayList<Depeche> depeches = lectureDepeches("./depeches.txt");
         ArrayList<Depeche> test = lectureDepeches("./test.txt");
+        System.out.println("Temps d'exécution pour lectureDepeches : " + (System.currentTimeMillis() - startTime) + " ms");
 
-
-//        for (int i = 0; i < depeches.size(); i++) {
-//            depeches.get(i).afficher();
-//        }
-
-
-
-        System.out.println("Initialisation des lexiques");
-
-
+        // Initialisation des catégories avec leurs lexiques manuels
+        startTime = System.currentTimeMillis();
         Categorie sport = new Categorie("sport");
         sport.initLexique("./sport.txt");
         Categorie economie = new Categorie("economie");
@@ -328,23 +325,7 @@ public class Classification {
         politique.initLexique("./politique.txt");
         Categorie culture = new Categorie("culture");
         culture.initLexique("./culture.txt");
-//        System.out.println(economie.getLexique());
-
-
-//        for(int i=0; i<sport.getLexique().size();i++){
-//            System.out.print(sport.getLexique().get(i).getChaine() + ":");
-//            System.out.println(sport.getLexique().get(i).getEntier());
-//        }
-
-           Scanner lecteur = new Scanner(System.in);
-//        System.out.print("Saisissez un mot à rechercher dans les lexiques: ");
-//        String mot = lecteur.nextLine();
-//        System.out.println(UtilitairePaireChaineEntier.entierPourChaine(sport.getLexique(),mot));
-
-//
-//        System.out.println(sport.score(depeches.get(402)));
-//        System.out.println(economie.score(depeches.get(204)));
-
+        System.out.println("Temps d'exécution pour initialisation des catégories : " + (System.currentTimeMillis() - startTime) + " ms");
 
         ArrayList<Categorie> listCategorie = new ArrayList<>();
         listCategorie.add(sport);
@@ -353,71 +334,71 @@ public class Classification {
         listCategorie.add(politique);
         listCategorie.add(culture);
 
-//        System.out.print("Donnez un  numéro de depeche: ");
-//        int numDepeche = lecteur.nextInt();lecteur.nextLine();
-//        ArrayList<PaireChaineEntier> listeScore = new ArrayList<>();
-//        for (int i = 0; i < listCategorie.size(); i++) {
-//
-//            int nombreMax = listCategorie.get(i).score(depeches.get(numDepeche));
-//            PaireChaineEntier aAjouter = new PaireChaineEntier(listCategorie.get(i).getNom(), nombreMax);
-//            listeScore.add(aAjouter);
-//
-//        }
+        // Évaluation avec les lexiques manuels
+        startTime = System.currentTimeMillis();
+        System.out.println("\n========================================");
+        System.out.println("Taux de réussite avec lexiques manuels:");
+        System.out.println("========================================\n");
+        classementDepeches(test, listCategorie, "fichier-reponse");
+        System.out.println("Temps d'exécution pour classementDepeches (lexiques manuels) : " + (System.currentTimeMillis() - startTime) + " ms");
+        System.out.println("Fichier 'fichier-reponse' créé avec succès.");
 
-//        System.out.println(UtilitairePaireChaineEntier.chaineMax(listeScore));
-
-
-        classementDepeches(depeches,listCategorie,"fichier-reponse");
-
-
-
+        // Génération automatique des lexiques
+        startTime = System.currentTimeMillis();
+        System.out.println("\n========================================");
+        System.out.println("Nombre de comparaisons par catégorie avec calculScores :");
+        System.out.println("========================================\n");
         for (Categorie categorie : listCategorie) {
-            generationLexique(depeches,categorie.getNom(),categorie.getNom()+"-lexique-automatique");
+            generationLexique(depeches, categorie.getNom(), categorie.getNom() + "-lexique-automatique");
+            System.out.println("Fichier '" + categorie.getNom() + "-lexique-automatique.txt' créé avec succès.");
         }
-        System.out.println("Création automatique des lexiques terminée.");
+        System.out.println("Temps d'exécution pour générationLexique : " + (System.currentTimeMillis() - startTime) + " ms");
 
-//        listCategorie.clear();
+        // Initialisation des lexiques automatiques
+        startTime = System.currentTimeMillis();
         sport.initLexique("./sport-lexique-automatique.txt");
         economie.initLexique("./economie-lexique-automatique.txt");
         sciences.initLexique("./sciences-lexique-automatique.txt");
         politique.initLexique("./politique-lexique-automatique.txt");
         culture.initLexique("./culture-lexique-automatique.txt");
-//        listCategorie.add(sport);
-//        listCategorie.add(economie);
-//        listCategorie.add(sciences);
-//        listCategorie.add(politique);
-//        listCategorie.add(culture);
-        classementDepeches(test,listCategorie,"fichier-reponse-automatique");
+        System.out.println("Temps d'exécution pour initialisation des lexiques automatiques : " + (System.currentTimeMillis() - startTime) + " ms");
 
-        long endtime = System.currentTimeMillis();
-//        System.out.println("le programme a été executé en : " + (endtime - starttime) +"ms");
+        // Évaluation avec les lexiques automatiques
+        startTime = System.currentTimeMillis();
+        System.out.println("\n========================================");
+        System.out.println("Taux de réussite avec lexiques automatiques:");
+        System.out.println("========================================\n");
+        classementDepeches(test, listCategorie, "fichier-reponse-automatique");
+        System.out.println("Temps d'exécution pour classementDepeches (lexiques automatiques) : " + (System.currentTimeMillis() - startTime) + " ms");
+        System.out.println("Fichier 'fichier-reponse-automatique' créé avec succès.");
 
+        // Test de la méthode KNN
+        startTime = System.currentTimeMillis();
+        System.out.println("\n========================================");
+        System.out.print("Test de la méthode KNN.\nEntrez un entier K représentant le nombre de dépêches les plus proches à comparer : ");
+        Scanner lecteur = new Scanner(System.in);
+        int k = lecteur.nextInt();
+        lecteur.nextLine();
 
+        ArrayList<Categorie> categorieKnn = new ArrayList<>();
+        for (Depeche depecheCourante : depeches) {
+            ArrayList<Depeche> voisins = knn.voisinsK(depeches, depecheCourante, k);
+            Categorie categoriePredite = knn.categorieDepeche(depecheCourante, voisins, listCategorie);
+            categorieKnn.add(categoriePredite);
+        }
+        knn.classementResultat(depeches, categorieKnn, listCategorie, "fichier-reponse-knn");
+        System.out.println("Fichier 'fichier-reponse-knn' créé avec succès.");
+        System.out.println("Temps d'exécution pour méthode KNN : " + (System.currentTimeMillis() - startTime) + " ms");
 
-
-            ArrayList<Categorie> categorieKnn = new ArrayList<>();
-//            for (int i = 0; i < depeches.size(); i++) {
-//                Categorie cateCouranteKnn = new Categorie(depeches.get(i).getCategorie());
-//                categorieKnn.add(cateCouranteKnn);
-//            }
-
-//            knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
-
-        System.out.print("On va tester la méthode KNN, pour cela entrez un nombre entier K qui représente le nombre de depeche\n les plus proches que l'on va comparer : ");
-        int k = lecteur.nextInt();lecteur.nextLine();
-//            knn.triDepecheKnn(depeches);
-            for (Depeche depechett : depeches){
-                    ArrayList<Depeche> voisin;
-                    voisin = knn.voisinsK(depeches,depechett,k);
-                    Categorie categ = knn.categorieDepeche(depeches.get(k),voisin,listCategorie);
-                    categorieKnn.add(categ);
-                }
-        knn.classementResultat(depeches,categorieKnn,listCategorie,"fichier-reponse-knn");
-
+        // Fin du programme
+        long globalEndTime = System.currentTimeMillis();
+        System.out.println("\nProgramme exécuté en : " + (globalEndTime - globalStartTime) + " ms");
     }
 
 
-    }
+
+
+}
 
 
 
