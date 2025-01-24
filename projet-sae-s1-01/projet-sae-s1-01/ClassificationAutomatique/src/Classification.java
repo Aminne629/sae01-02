@@ -372,6 +372,45 @@ public class Classification {
         System.out.println("Temps d'exécution pour classementDepeches (lexiques automatiques) : " + (System.currentTimeMillis() - startTime) + " ms");
         System.out.println("Fichier 'fichier-reponse-automatique' créé avec succès.");
 
+        // classification2
+        System.out.println("\n========================================");
+        System.out.println("Classification 2:");
+        System.out.println("========================================\n");
+
+        System.out.println("Chargement des depeches");
+        ArrayList<Depeche> depeches2 = lectureDepeches("./depeches2.txt"); // Création fichier depeches
+        System.out.println("Temps d'exécution pour lectureDepeches : " + (System.currentTimeMillis() - startTime) + " ms");
+
+        System.out.println("Découverte des catégories");
+        ArrayList<Categorie> categories = Classification2.decouvrirCategories(depeches2); // Création des catégories
+        System.out.println("Temps d'exécution pour decouvrirCategories : " + (System.currentTimeMillis() - startTime) + " ms");
+
+        System.out.println("Initialisation des lexiques");
+        for (Categorie categorie : categories) {
+            startTime = System.currentTimeMillis(); // Redémarrer le temps à chaque fonction
+            generationLexique(depeches2, categorie.getNom(), "./" + categorie.getNom().toLowerCase() + "-lexique2-automatique");
+            System.out.println("Temps d'exécution pour generationLexique (" + categorie.getNom() + ") : " + (System.currentTimeMillis() - startTime) + " ms");
+        }
+
+        for (int i = 0; i < categories.size(); i++) {
+            startTime = System.currentTimeMillis();
+            categories.get(i).initLexique("./" + categories.get(i).getNom().toLowerCase() + "-lexique2-automatique.txt"); // Initialisation des lexiques
+            System.out.println("Temps d'exécution pour initLexique (" + categories.get(i).getNom() + ") : " + (System.currentTimeMillis() - startTime) + " ms");
+        }
+
+        System.out.println("Chargement du fichier de test");
+        ArrayList<Depeche> testDepeches = lectureDepeches("./test2.txt");
+        System.out.println("Temps d'exécution pour lectureDepeches (test2.txt) : " + (System.currentTimeMillis() - startTime) + " ms");
+
+        System.out.println("Classification des dépêches");
+        startTime = System.currentTimeMillis();
+        classementDepeches(testDepeches, categories, "./fichier-reponse2_automatique");
+        System.out.println("Temps d'exécution pour classementDepeches (lexiques automatiques) : " + (System.currentTimeMillis() - startTime) + " ms");
+
+        System.out.println("Fichier 'fichier-reponse2_automatique' créé avec succès.");
+
+
+
         // Test de la méthode KNN
         startTime = System.currentTimeMillis();
         System.out.println("\n========================================");
@@ -392,7 +431,7 @@ public class Classification {
 
         // Fin du programme
         long globalEndTime = System.currentTimeMillis();
-        System.out.println("\nProgramme exécuté en : " + (globalEndTime - globalStartTime) + " ms");
+        System.out.println("\nProgramme total exécuté en : " + (globalEndTime - globalStartTime) + " ms");
     }
 
 
